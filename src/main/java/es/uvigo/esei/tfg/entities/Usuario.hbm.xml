@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="es.uvigo.esei.tfg.entities">
+	<class name="Usuario" table="Usuario">
+	        <id name="dni" column="DNI_USU" type="string"/>
+	        <property name="nombre" column="NOMBRE_USU" type="string"/>
+	        <property name="apellido1" column="APELLIDO1_USU" type="string"/>
+	        <property name="apellido2" column="APELLIDO2_USU" type="string"/>
+	        <property name="direccion" column="DIRECCION_USU" type="string"/>
+	        <property name="horas" column="HORAS_USU" type="int"/>
+	        <property name="modalidad" column="MODALIDAD_USU" type="string"/>
+	</class>
+</hibernate-mapping>

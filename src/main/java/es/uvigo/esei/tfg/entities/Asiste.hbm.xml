@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="es.uvigo.esei.tfg.entities">
+	<class name="Asiste" table="Asiste">
+		<composite-id>
+    		<key-property name="dniUsuario" column="DNI_USU_ASI" type="string"/>
+        	<key-property name="dniAuxiliar" column="DNI_AUX_ASI" type="string"/>
+		</composite-id> 
+		<!--  <id name="dniUsuario" column="DNI_USU_ASI" type="string"/>
+		<property name="dniAuxiliar" column="DNI_AUX_ASI" type="string"/>-->
+        <property name="fechaHoraInicioAsistencia" column="FHORAINICIO_ASI" type="timestamp"/>
+        <property name="fechaHoraFinAsistencia" column="FHORAFIN_ASI" type="timestamp"/>
+        <property name="actividad" column="ACTIVIDAD_ASI" type="string"/>
+	</class>
+</hibernate-mapping>

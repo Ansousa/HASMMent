@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="es.uvigo.esei.tfg.entities">
+	<class name="Auxiliar" table="Auxiliar">
+        <id name="dni" column="DNI_AUX" type="string"/>
+        <property name="nombre" column="NOMBRE_AUX" type="string"/>
+        <property name="apellido1" column="APELLIDO1_AUX" type="string"/>
+        <property name="apellido2" column="APELLIDO2_AUX" type="string"/>
+        <property name="horas" column="HORAS_AUX" type="int"/>
+        <property name="fechaInicioContrato" column="FINICIO_AUX" type="date"/>
+        <property name="fechaFinContrato" column="FFIN_AUX" type="date"/>
+    </class>
+</hibernate-mapping>
