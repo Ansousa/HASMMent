@@ -1,6 +1,6 @@
-package es.uvigo.esei.tfg;
+package es.uvigo.esei.hasmment;
 
-import es.uvigo.esei.tfg.gui.*;
+import es.uvigo.esei.hasmment.gui.*;
 
 public class HASMment {
 	public static void main(String[] args)

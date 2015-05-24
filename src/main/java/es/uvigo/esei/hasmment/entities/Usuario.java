@@ -1,4 +1,4 @@
-package es.uvigo.esei.tfg.entities;
+package es.uvigo.esei.hasmment.entities;
 
 
 public class Usuario extends Persona implements DBEntity{

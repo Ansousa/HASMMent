@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="es.uvigo.esei.tfg.entities">
+<hibernate-mapping package="es.uvigo.esei.hasmment.entities">
 	<class name="Auxiliar" table="Auxiliar">
         <id name="dni" column="DNI_AUX" type="string"/>
         <property name="nombre" column="NOMBRE_AUX" type="string"/>

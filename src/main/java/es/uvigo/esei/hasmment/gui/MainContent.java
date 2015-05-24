@@ -1,4 +1,4 @@
-package es.uvigo.esei.tfg.gui;
+package es.uvigo.esei.hasmment.gui;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -6,9 +6,9 @@ import javax.swing.JPanel;
 
 import java.util.*;
 
-import es.uvigo.esei.tfg.dao.HibernateEntities;
-import es.uvigo.esei.tfg.dao.HibernateMethods;
-import es.uvigo.esei.tfg.entities.*;
+import es.uvigo.esei.hasmment.dao.HibernateEntities;
+import es.uvigo.esei.hasmment.dao.HibernateMethods;
+import es.uvigo.esei.hasmment.entities.*;
 
 public class MainContent extends JPanel{
 	MainFrame owner;

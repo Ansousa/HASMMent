@@ -1,4 +1,4 @@
-package es.uvigo.esei.tfg.dao;
+package es.uvigo.esei.hasmment.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

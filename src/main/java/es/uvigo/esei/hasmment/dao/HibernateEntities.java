@@ -1,4 +1,4 @@
-package es.uvigo.esei.tfg.dao;
+package es.uvigo.esei.hasmment.dao;
 
 public abstract class HibernateEntities {
 	public final static String PERSONA = "Persona";

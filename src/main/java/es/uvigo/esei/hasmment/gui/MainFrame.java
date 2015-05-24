@@ -1,10 +1,11 @@
-package es.uvigo.esei.tfg.gui;
+package es.uvigo.esei.hasmment.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 
-import es.uvigo.esei.tfg.dao.HibernateFactory;
+import es.uvigo.esei.hasmment.dao.HibernateFactory;
 
 public class MainFrame extends JFrame{
 	private static final long serialVersionUID = 1L;

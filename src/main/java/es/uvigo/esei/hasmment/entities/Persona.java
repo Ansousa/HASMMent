@@ -1,4 +1,4 @@
-package es.uvigo.esei.tfg.entities;
+package es.uvigo.esei.hasmment.entities;
 
 public abstract class Persona implements DBEntity{
 	private String dni;

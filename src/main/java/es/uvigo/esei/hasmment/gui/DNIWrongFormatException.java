@@ -1,4 +1,4 @@
-package es.uvigo.esei.tfg.gui;
+package es.uvigo.esei.hasmment.gui;
 
 public class DNIWrongFormatException extends Exception{
 	private String dni;

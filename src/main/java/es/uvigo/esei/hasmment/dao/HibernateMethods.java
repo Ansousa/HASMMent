@@ -1,14 +1,14 @@
-package es.uvigo.esei.tfg.dao;
+package es.uvigo.esei.hasmment.dao;
 
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import es.uvigo.esei.tfg.entities.Auxiliar;
-import es.uvigo.esei.tfg.entities.DBEntity;
-import es.uvigo.esei.tfg.entities.Persona;
-import es.uvigo.esei.tfg.entities.Usuario;
+import es.uvigo.esei.hasmment.entities.Auxiliar;
+import es.uvigo.esei.hasmment.entities.DBEntity;
+import es.uvigo.esei.hasmment.entities.Persona;
+import es.uvigo.esei.hasmment.entities.Usuario;
 
 public abstract class HibernateMethods {
 	//Devuelve una lista de las entidades

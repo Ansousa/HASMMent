@@ -1,4 +1,4 @@
-package es.uvigo.esei.tfg.gui;
+package es.uvigo.esei.hasmment.gui;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -24,9 +24,9 @@ import javax.swing.SpinnerDateModel;
 
 import org.hibernate.exception.ConstraintViolationException;
 
-import es.uvigo.esei.tfg.dao.HibernateMethods;
-import es.uvigo.esei.tfg.entities.Auxiliar;
-import es.uvigo.esei.tfg.entities.Usuario;
+import es.uvigo.esei.hasmment.dao.HibernateMethods;
+import es.uvigo.esei.hasmment.entities.Auxiliar;
+import es.uvigo.esei.hasmment.entities.Usuario;
 
 public class CreatePersonaDialog extends JDialog implements ActionListener{	
 	JLabel dniL,nombreL,apellido1L,apellido2L,direccionL,horasL,modalidadL,fInicioCL,fFinCL;
