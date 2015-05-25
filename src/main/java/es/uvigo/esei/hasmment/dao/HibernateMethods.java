@@ -1,6 +1,6 @@
 package es.uvigo.esei.hasmment.dao;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,10 +12,10 @@ import es.uvigo.esei.hasmment.entities.Usuario;
 
 public abstract class HibernateMethods {
 	//Devuelve una lista de las entidades
-	public static List<DBEntity> getListEntities(String entity){
+	public static ArrayList<DBEntity> getListEntities(String entity){
 		Session session = HibernateFactory.getSession();
 		Query query = session.createQuery("from " + entity);
-		List<DBEntity> list = query.list();
+		ArrayList<DBEntity> list = (ArrayList<DBEntity>) query.list();
 		session.close();
 		return list;
 	}
@@ -47,7 +47,7 @@ public abstract class HibernateMethods {
 	
 	//Devuelve el Usuario o Auxiliar por DNI, si no devuelve null
 	public static DBEntity gestEntityByDNI(String dni, String entity){
-		List<DBEntity> list = getListEntities(entity);
+		ArrayList<DBEntity> list = getListEntities(entity);
 		Persona x = null;
 		for(int i=0;i<list.size();i++) {
 			if(x.getDni() == dni){
@@ -59,7 +59,7 @@ public abstract class HibernateMethods {
 	
 	//Comprobar si las entidades a pedir corresponde a alguna de las creadas
 	private static Boolean checkEntity(DBEntity entity){
-		String c = entity.getClass().toString().replace("class es.uvigo.esei.tfg.entities.", "").trim();
+		String c = entity.getClass().toString().replace("class es.uvigo.esei.hasmment.entities.", "").trim();
 		switch (c) {
 		case "Usuario":
 			return true;

@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="es.uvigo.esei.hasmment.entities">
-	<class name="Auxiliar" table="Auxiliar">
+	<class name="Auxiliar" table="auxiliar">
         <id name="dni" column="DNI_AUX" type="string"/>
         <property name="nombre" column="NOMBRE_AUX" type="string"/>
         <property name="apellido1" column="APELLIDO1_AUX" type="string"/>

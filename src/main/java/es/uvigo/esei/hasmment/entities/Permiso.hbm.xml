@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="es.uvigo.esei.hasmment.entities">
-	<class name="Permiso" table="Permiso">
+	<class name="Permiso" table="permiso">
 		<composite-id>
     		<key-property name="dni" column="DNI_AUX_PER" type="string"/>
         	<key-property name="fechaInicioPermiso" column="FINICIO_PER" type="date"/>

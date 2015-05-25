@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="es.uvigo.esei.hasmment.entities">
-	<class name="Asiste" table="Asiste">
+	<class name="Asiste" table="asiste">
 		<composite-id>
     		<key-property name="dniUsuario" column="DNI_USU_ASI" type="string"/>
         	<key-property name="dniAuxiliar" column="DNI_AUX_ASI" type="string"/>

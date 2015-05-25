@@ -13,7 +13,6 @@ import es.uvigo.esei.hasmment.entities.*;
 public class MainContent extends JPanel{
 	MainFrame owner;
 	public MainContent(MainFrame owner) {
-		new JPanel();
 		this.owner = owner;
 		initMainContent();
 	}

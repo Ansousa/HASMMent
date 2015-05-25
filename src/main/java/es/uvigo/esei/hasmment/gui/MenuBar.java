@@ -14,7 +14,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	private MainFrame owner;
 	private MainContent mc;
 	private JMenu userMenu,auxMenu,perMenu,asistMenu;
-	private JMenuItem createUserItem,createAuxItem,createPerItem,createAsistItem;
+	private JMenuItem consultUserItem,consultAuxItem,consultPerItem,consultAsistItem;
 	
 	public MenuBar(MainFrame owner, MainContent mc){
 		this.owner = owner;
@@ -27,47 +27,47 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		userMenu = new JMenu("Gestion Usuarios");
 		add(userMenu);
 		
-		createUserItem = new JMenuItem("Crear Usuario");
-		createUserItem.addActionListener(this);
-		userMenu.add(createUserItem);
+		consultUserItem = new JMenuItem("Consultar Usuarios");
+		consultUserItem.addActionListener(this);
+		userMenu.add(consultUserItem);
 		
 		/*Menu Auxiliares*/
 		auxMenu = new JMenu("Gestion Auxiliares");
 		add(auxMenu);
 		
-		createAuxItem = new JMenuItem("Crear Auxiliar");
-		createAuxItem.addActionListener(this);
-		auxMenu.add(createAuxItem);
+		consultAuxItem = new JMenuItem("Consultar Auxiliares");
+		consultAuxItem.addActionListener(this);
+		auxMenu.add(consultAuxItem);
 		
 		/*Menu Permisos*/
 		perMenu = new JMenu("Gestion Permisos");
 		add(perMenu);
 		
-		createPerItem = new JMenuItem("Crear Permiso");
-		createPerItem.addActionListener(this);
-		perMenu.add(createPerItem);
+		consultPerItem = new JMenuItem("Consultar Permisos");
+		consultPerItem.addActionListener(this);
+		perMenu.add(consultPerItem);
 		
 		/*Menu Asiste*/
 		asistMenu = new JMenu("Gestion Asistencias");
 		add(asistMenu);
 		
-		createAsistItem = new JMenuItem("Crear Asistencia");
-		createAsistItem.addActionListener(this);
-		asistMenu.add(createAsistItem);
+		consultAsistItem = new JMenuItem("Consultar Asistencias");
+		consultAsistItem.addActionListener(this);
+		asistMenu.add(consultAsistItem);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == createUserItem) {
-			new CreatePersonaDialog(this.owner, HibernateEntities.USUARIO, this.mc);
+		if(e.getSource() == consultUserItem) {
+			new ConsultUsuarioDialog(this.owner, this.mc);
 		}
-		else if(e.getSource() == createPerItem){
-			new CreatePermisoDialog(this.owner, this.mc);
+		else if(e.getSource() == consultPerItem){
+			new ConsultPermisoDialog(this.owner, this.mc);
 		}
-		else if(e.getSource() == createAuxItem){
-			new CreatePersonaDialog(this.owner, HibernateEntities.AUXILIAR, this.mc);
+		else if(e.getSource() == consultAuxItem){
+			new ConsultAuxiliarDialog(this.owner, this.mc);
 		}
-		else if(e.getSource() == createAsistItem){
-			new CreateAsisteDialog(this.owner, this.mc);
+		else if(e.getSource() == consultAsistItem){
+			new ConsultAsisteDialog(this.owner, this.mc);
 		}
 	}
 }
