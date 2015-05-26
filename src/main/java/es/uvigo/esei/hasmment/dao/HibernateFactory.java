@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
+/* Clase para poder crear sesiones de acceso a la base de datos
+ */
 public abstract class HibernateFactory {
 	private static SessionFactory factory;
 	

@@ -1,5 +1,7 @@
-package es.uvigo.esei.hasmment.gui;
+package es.uvigo.esei.hasmment.gui.entitymanager;
 
+/*Excepcion cuando el formato del dni no es correcto*/
+@SuppressWarnings("serial")
 public class DNIWrongFormatException extends Exception{
 	private String dni;
 	

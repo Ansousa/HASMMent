@@ -7,7 +7,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import es.uvigo.esei.hasmment.dao.HibernateEntities;
+import es.uvigo.esei.hasmment.gui.entitymanager.ConsultAsisteDialog;
+import es.uvigo.esei.hasmment.gui.entitymanager.ConsultAuxiliarDialog;
+import es.uvigo.esei.hasmment.gui.entitymanager.ConsultPermisoDialog;
+import es.uvigo.esei.hasmment.gui.entitymanager.ConsultUsuarioDialog;
 
 public class MenuBar extends JMenuBar implements ActionListener{
 	private static final long serialVersionUID = 1L;

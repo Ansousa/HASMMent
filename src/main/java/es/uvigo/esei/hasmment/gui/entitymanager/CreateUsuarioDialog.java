@@ -1,4 +1,4 @@
-package es.uvigo.esei.hasmment.gui;
+package es.uvigo.esei.hasmment.gui.entitymanager;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -21,6 +21,8 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.Usuario;
+import es.uvigo.esei.hasmment.gui.MainContent;
+import es.uvigo.esei.hasmment.gui.MainFrame;
 
 public class CreateUsuarioDialog extends JDialog implements ActionListener{	
 	JLabel dniL,nombreL,apellido1L,apellido2L,direccionL,horasL,modalidadL,fInicioCL,fFinCL;
@@ -30,7 +32,7 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 	JSpinner.DateEditor dateEditorInicio, dateEditorFin;
 	
 	MainContent mc;
-	MainFrame owner;
+	ConsultUsuarioDialog owner;
 	
 	JTextArea direccionTA;
 	JComboBox<String> modalidadCB;
@@ -38,16 +40,17 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 	
 	String modalidades[] = {"-", "Dependencia", "Prestación Básica" };
 	
-	public CreateUsuarioDialog(MainFrame owner, MainContent mc) {
+	public CreateUsuarioDialog(ConsultUsuarioDialog owner, MainContent mc) {
 		super(owner);
-		this.owner = owner;
 		this.mc = mc;
+		this.owner = owner;
 		initCreateDialog();
 	}
 	
 	private void initCreateDialog() {
 		setLocationRelativeTo(this.getOwner());
 		setTitle("Crear Usuario");
+		//setModal(true);
 		add(createForm());
 		setVisible(true);
 		pack();
@@ -134,6 +137,7 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 					(String)modalidadCB.getSelectedItem());
 		
 		HibernateMethods.saveEntity(u);
+		this.owner.updateRows();
 	}
 	
 	private void checkUsuarioForm() throws Exception{
@@ -188,44 +192,6 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		}
 		else if(e.getSource() == clearButton) {
 			clearAction();
-		}
-	}
-	
-	private class DBMessage extends JDialog implements ActionListener {
-		JButton buttonOK;
-		public DBMessage(JDialog owner, String msg) {
-			super(owner);
-			JLabel message = new JLabel("Error - " + msg);
-			if(msg=="")
-				message.setText("Usuario añadido con exito");
-			else
-				message.setForeground(Color.red);
-			message.setBorder(BorderFactory.createEmptyBorder(20,5,20,5));
-			
-			buttonOK = new JButton("Ok");
-			buttonOK.addActionListener(this);
-			
-			setLayout(new GridBagLayout());
-			GridBagConstraints c = new GridBagConstraints();
-			c.gridx = 0;
-			c.gridy = 0;
-			c.gridwidth = 3;
-			add(message,c);
-			
-			c.gridx = 2;
-			c.gridy = 1;
-			c.gridwidth = 1;
-			
-			add(buttonOK,c);
-			setLocationRelativeTo(this);
-			pack();
-			setVisible(true);
-		}
-		
-		public void actionPerformed(ActionEvent e) {
-			if(e.getSource() == buttonOK){
-				this.dispose();
-			}
 		}
 	}
 }

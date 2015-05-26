@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import es.uvigo.esei.hasmment.entities.Auxiliar;
 import es.uvigo.esei.hasmment.entities.DBEntity;
-import es.uvigo.esei.hasmment.entities.Persona;
 import es.uvigo.esei.hasmment.entities.Usuario;
 
+@SuppressWarnings("unchecked")
 public abstract class HibernateMethods {
 	//Devuelve una lista de las entidades
 	public static ArrayList<DBEntity> getListEntities(String entity){
@@ -20,7 +19,7 @@ public abstract class HibernateMethods {
 		return list;
 	}
 	
-	//Guarda la entidad
+	//Guarda una entidad
 	public static void saveEntity(DBEntity entity){
 		if(checkEntity(entity))
 		{
@@ -45,29 +44,23 @@ public abstract class HibernateMethods {
 		}
 	}
 	
-	//Devuelve el Usuario o Auxiliar por DNI, si no devuelve null
-	public static DBEntity gestEntityByDNI(String dni, String entity){
-		ArrayList<DBEntity> list = getListEntities(entity);
-		Persona x = null;
-		for(int i=0;i<list.size();i++) {
-			if(x.getDni() == dni){
-				return x;
-			}
-		}
-		return null;
+	//devuelve un usuario por su dni
+	public static Usuario getUsuario(String DNI) {
+		Session session = HibernateFactory.getSession();
+	 	return (Usuario)session.createQuery("from Usuario u where u.dni = '" + DNI +"'").uniqueResult();
 	}
 	
-	//Comprobar si las entidades a pedir corresponde a alguna de las creadas
+	//Comprobar si las entidades a pedir corresponde a alguna de las creadas, si todo correcto devuelve true
 	private static Boolean checkEntity(DBEntity entity){
 		String c = entity.getClass().toString().replace("class es.uvigo.esei.hasmment.entities.", "").trim();
 		switch (c) {
-		case "Usuario":
+		case HibernateEntities.USUARIO:
 			return true;
-		case "Auxiliar":
+		case HibernateEntities.AUXILIAR:
 			return true;
-		case "Permiso":
+		case HibernateEntities.PERMISO:
 			return true;
-		case "Asiste":
+		case HibernateEntities.ASISTE:
 			return true;
 		default:
 			return false;

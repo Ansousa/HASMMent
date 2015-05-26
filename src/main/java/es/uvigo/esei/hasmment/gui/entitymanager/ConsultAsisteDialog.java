@@ -1,8 +1,11 @@
-package es.uvigo.esei.hasmment.gui;
+package es.uvigo.esei.hasmment.gui.entitymanager;
 
-public class ConsultAuxiliarDialog extends ConsultDialog{
+import es.uvigo.esei.hasmment.gui.MainContent;
+import es.uvigo.esei.hasmment.gui.MainFrame;
+
+public class ConsultAsisteDialog extends ConsultDialog{
 	
-	public ConsultAuxiliarDialog(MainFrame owner, MainContent mc) {
+	public ConsultAsisteDialog(MainFrame owner, MainContent mc) {
 		super(owner, mc);
 	}
 

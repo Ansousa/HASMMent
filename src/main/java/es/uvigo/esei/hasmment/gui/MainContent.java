@@ -10,6 +10,7 @@ import es.uvigo.esei.hasmment.dao.HibernateEntities;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.*;
 
+@SuppressWarnings("serial")
 public class MainContent extends JPanel{
 	MainFrame owner;
 	public MainContent(MainFrame owner) {

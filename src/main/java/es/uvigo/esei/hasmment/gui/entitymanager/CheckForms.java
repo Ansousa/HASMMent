@@ -1,8 +1,9 @@
-package es.uvigo.esei.hasmment.gui;
+package es.uvigo.esei.hasmment.gui.entitymanager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*Clase para comprobar los formularios*/
 public abstract class CheckForms {
 	public static Boolean checkDNI(String dni){
 		Pattern dniPattern = Pattern.compile("(\\d{1,8})([TRWAGMYFPDXBNJZSQVHLCKEtrwagmyfpdxbnjzsqvhlcke])");

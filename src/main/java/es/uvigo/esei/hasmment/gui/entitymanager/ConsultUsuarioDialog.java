@@ -1,4 +1,4 @@
-package es.uvigo.esei.hasmment.gui;
+package es.uvigo.esei.hasmment.gui.entitymanager;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,20 +34,27 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.hibernate.mapping.Table;
+import org.hibernate.sql.ordering.antlr.ColumnMapper;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.*;
+import es.uvigo.esei.hasmment.gui.MainContent;
+import es.uvigo.esei.hasmment.gui.MainFrame;
 
 public class ConsultUsuarioDialog extends ConsultDialog implements ActionListener{
 	private ArrayList<DBEntity> users;
 	private JCheckBox direccionCB, horasCB, modalidadCB;
 	private UsuarioTableModel tm;
-	private String userSelected;
+	private int indexTableSelected;
+	private JScrollPane tablePanel;
+	
+	private TableColumnModel cm;
+	private TableColumn direccionTC, horasTC, modalidadTC;
 	
 	public ConsultUsuarioDialog(MainFrame owner, MainContent mc) {
 		super(owner, mc);
-		userSelected = "";
+		indexTableSelected = 0;
 		this.users = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
 		setUsuarioDialog();
 	}
@@ -89,48 +97,44 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		dataTable = new JTable(tm);
 		
 		dataTable.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {};
 			
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				
-			}
+			public void mousePressed(MouseEvent e) {};
 			
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseExited(MouseEvent e) {};
 			
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseEntered(MouseEvent e) {};
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				userSelected = (String)tm.getValueAt(dataTable.getSelectedRow(), 0);
-				System.out.println(userSelected);
+				indexTableSelected = dataTable.getSelectedRow();
 			}
 		});
 				
 		tablePanel = new JScrollPane(dataTable);
 		tablePanel.setPreferredSize(new Dimension(800,200));
 		add(tablePanel,BorderLayout.CENTER);
+		
+		cm = dataTable.getTableHeader().getColumnModel();
+		direccionTC = cm.getColumn(4);
+		horasTC = cm.getColumn(5);
+		modalidadTC = cm.getColumn(6);
 	}
 	
 	class UsuarioTableModel extends AbstractTableModel{
-		Vector<Vector> data;
+			Vector<Vector> data;
 
 		  String columnNames[] = { "DNI", "Nombre", "Apellido1", "Apellido2", "Direccion", "Horas", "Modalidad"};
 		
 		  public UsuarioTableModel() {
+			  updateRows();
+		  }
+		  
+		  public void updateRows() {
 			  data = new Vector<Vector>();
 			  for(DBEntity e:users){
 				  Usuario u = (Usuario) e;
@@ -172,18 +176,7 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		
 		  public boolean isCellEditable(int row, int column) {
 			  return (column != 0);
-		  }		
-	}
-	
-	private void updateTable(){
-		
-		if(direccionCB.isSelected())
-
-		if(horasCB.isSelected())
-
-		if(modalidadCB.isSelected())
-		
-		dataTable.repaint();
+		  }
 	}
 	
 	@Override
@@ -194,16 +187,41 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		buttonsPanel.add(createButton);
 		buttonsPanel.add(deleteButton);
 		createButton.addActionListener(this);
+		deleteButton.addActionListener(this);
 		add(buttonsPanel,BorderLayout.SOUTH);
+	}
+	
+	private void updateColums(){
+		cm.removeColumn(direccionTC);
+		cm.removeColumn(horasTC);
+		cm.removeColumn(modalidadTC);
+		if(direccionCB.isSelected())
+			cm.addColumn(direccionTC);
+		if(horasCB.isSelected())
+			cm.addColumn(horasTC);
+		if(modalidadCB.isSelected())
+			cm.addColumn(modalidadTC);
+		dataTable.repaint();
+	}
+	
+	public void updateRows() {
+		users = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
+		tm.updateRows();
+		tm.fireTableDataChanged();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == createButton) {
-			new CreateUsuarioDialog(this.owner, this.mc);
+			new CreateUsuarioDialog(this, this.mc);
+		}
+		if(e.getSource() == deleteButton) {
+			Usuario us = (Usuario)users.get(indexTableSelected);
+			String me = (String)tm.getValueAt(indexTableSelected, 0);
+			new DeleteConfirm(this, us, me);
 		}
 		if(e.getSource() == direccionCB || e.getSource() == horasCB || e.getSource() == modalidadCB) {
-			updateTable();
+			updateColums();
 		}
 	}
 }

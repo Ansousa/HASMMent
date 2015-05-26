@@ -34,6 +34,7 @@ public class MainFrame extends JFrame{
 		pack();
 	}
 	
+	//Cuando se manda cerrar la ventana principal, se ordena cerrar la fabrica de sesiones y se cierra la ventana
 	private int closeWindow(){
 		HibernateFactory.closeFactory();
 		return JFrame.EXIT_ON_CLOSE;
