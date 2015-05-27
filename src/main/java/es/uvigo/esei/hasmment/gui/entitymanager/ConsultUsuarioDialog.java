@@ -1,44 +1,28 @@
 package es.uvigo.esei.hasmment.gui.entitymanager;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.StringJoiner;
 import java.util.Vector;
-import java.util.stream.Stream;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-
-import org.hibernate.mapping.Table;
-import org.hibernate.sql.ordering.antlr.ColumnMapper;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
-import es.uvigo.esei.hasmment.entities.*;
+import es.uvigo.esei.hasmment.entities.DBEntity;
+import es.uvigo.esei.hasmment.entities.Usuario;
 import es.uvigo.esei.hasmment.gui.MainContent;
 import es.uvigo.esei.hasmment.gui.MainFrame;
 
@@ -209,7 +193,7 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		tm.updateRows();
 		tm.fireTableDataChanged();
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == createButton) {
