@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import es.uvigo.esei.hasmment.entities.Auxiliar;
 import es.uvigo.esei.hasmment.entities.DBEntity;
 import es.uvigo.esei.hasmment.entities.Usuario;
 
@@ -32,6 +33,19 @@ public abstract class HibernateMethods {
 		}
 	}
 	
+	//Modifica una entidad
+	public static void modifyEntity(DBEntity entity){
+		if(checkEntity(entity))
+		{
+			Session session = HibernateFactory.getSession();
+			session.beginTransaction();
+			session.update(entity);
+			session.flush();
+			session.getTransaction().commit();
+			session.close();
+		}
+	}
+	
 	//Elimina una entidad dada
 	public static void deleteEntity(DBEntity entity) {
 		if(checkEntity(entity)) {
@@ -47,7 +61,17 @@ public abstract class HibernateMethods {
 	//devuelve un usuario por su dni
 	public static Usuario getUsuario(String DNI) {
 		Session session = HibernateFactory.getSession();
-	 	return (Usuario)session.createQuery("from Usuario u where u.dni = '" + DNI +"'").uniqueResult();
+	 	Usuario u = (Usuario)session.createQuery("from Usuario u where u.dni = '" + DNI +"'").uniqueResult();
+	 	session.close();
+	 	return u;
+	}
+	
+	//devuelve un auxiliar por su dni
+	public static Auxiliar getAuxiliar(String DNI) {
+		Session session = HibernateFactory.getSession();
+		Auxiliar a = (Auxiliar)session.createQuery("from Auxiliar u where u.dni = '" + DNI +"'").uniqueResult();
+		session.close();
+		return a;
 	}
 	
 	//Comprobar si las entidades a pedir corresponde a alguna de las creadas, si todo correcto devuelve true

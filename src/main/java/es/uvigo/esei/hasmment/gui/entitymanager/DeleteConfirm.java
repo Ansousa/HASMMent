@@ -1,12 +1,9 @@
 package es.uvigo.esei.hasmment.gui.entitymanager;
 
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,7 +12,6 @@ import javax.swing.JPanel;
 
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.DBEntity;
-import es.uvigo.esei.hasmment.entities.Usuario;
 
 /* JDialog que nos pedirá la confirmación para eliminar una entidad en la base de datos*/
 @SuppressWarnings("serial")
@@ -23,11 +19,13 @@ public class DeleteConfirm extends JDialog implements ActionListener{
 	DBEntity entity;
 	JButton buttonOK,buttonCancel;
 	String identity;
+	ConsultDialog owner;
 	
-	public DeleteConfirm(JDialog owner, DBEntity entity, String identity) {
+	public DeleteConfirm(ConsultDialog owner, DBEntity entity, String identity) {
 		super(owner);
 		this.entity = entity;
 		this.identity = identity;
+		this.owner = owner;
 		initDialog();
 		setLocationRelativeTo(owner);
 		pack();
@@ -64,6 +62,7 @@ public class DeleteConfirm extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == buttonOK){
 			HibernateMethods.deleteEntity(this.entity);
+			this.owner.updateTable();
 			this.dispose();
 		}
 		if(e.getSource() == buttonCancel){

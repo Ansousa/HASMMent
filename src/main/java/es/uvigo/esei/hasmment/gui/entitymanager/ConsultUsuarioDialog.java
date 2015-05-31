@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -15,9 +14,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
@@ -26,20 +23,18 @@ import es.uvigo.esei.hasmment.entities.Usuario;
 import es.uvigo.esei.hasmment.gui.MainContent;
 import es.uvigo.esei.hasmment.gui.MainFrame;
 
+@SuppressWarnings("serial")
 public class ConsultUsuarioDialog extends ConsultDialog implements ActionListener{
-	private ArrayList<DBEntity> users;
 	private JCheckBox direccionCB, horasCB, modalidadCB;
-	private UsuarioTableModel tm;
-	private int indexTableSelected;
-	private JScrollPane tablePanel;
 	
-	private TableColumnModel cm;
+	private String[] columnNames = { "DNI", "Nombre", "Apellido1", "Apellido2", "Direccion", "Horas", "Modalidad"};
+	
 	private TableColumn direccionTC, horasTC, modalidadTC;
 	
 	public ConsultUsuarioDialog(MainFrame owner, MainContent mc) {
 		super(owner, mc);
 		indexTableSelected = 0;
-		this.users = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
+		this.entities = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
 		setUsuarioDialog();
 	}
 	
@@ -55,7 +50,7 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 	
 	@Override
 	protected void createCheckBoxes() {
-		direccionCB = new JCheckBox("direccionCB");
+		direccionCB = new JCheckBox("Direccion");
 		horasCB = new JCheckBox("Horas");
 		modalidadCB = new JCheckBox("Modalidad");
 		
@@ -75,9 +70,26 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		add(checkPanel,BorderLayout.NORTH);
 	}
 	
+	private Vector<Vector> createRows() {
+		Vector<Vector> data = new Vector<Vector>();
+		for(DBEntity e:entities){
+			Usuario u = (Usuario) e;
+			Vector<String> row = new Vector<String>();
+			row.add(u.getDni());
+			row.add(u.getNombre());
+			row.add(u.getApellido1());
+			row.add(u.getApellido2());
+			row.add(u.getDireccion());
+			row.add(new Integer(u.getHoras()).toString());
+			row.add(u.getModalidad());
+			data.add(row);
+		}
+		return data;
+	}
+	
 	@Override
 	protected void createTable() {		
-		tm = new UsuarioTableModel();
+		tm = new ConsultTableModel(columnNames,createRows());
 		dataTable = new JTable(tm);
 		
 		dataTable.addMouseListener(new MouseListener() {
@@ -109,70 +121,12 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		modalidadTC = cm.getColumn(6);
 	}
 	
-	class UsuarioTableModel extends AbstractTableModel{
-			Vector<Vector> data;
-
-		  String columnNames[] = { "DNI", "Nombre", "Apellido1", "Apellido2", "Direccion", "Horas", "Modalidad"};
-		
-		  public UsuarioTableModel() {
-			  updateRows();
-		  }
-		  
-		  public void updateRows() {
-			  data = new Vector<Vector>();
-			  for(DBEntity e:users){
-				  Usuario u = (Usuario) e;
-				  Vector<String> row = new Vector<String>();
-				  row.add(u.getDni());
-				  row.add(u.getNombre());
-				  row.add(u.getApellido1());
-				  row.add(u.getApellido2());
-				  row.add(u.getDireccion());
-				  row.add(new Integer(u.getHoras()).toString());
-				  row.add(u.getModalidad());
-				  data.add(row);
-			  }
-		  }
-		  
-		  public int getColumnCount() {
-		    return columnNames.length;
-		  }
-		
-		  public String getColumnName(int column) {
-		    return columnNames[column];
-		  }
-		
-		  public int getRowCount() {
-		    return data.size();
-		  }
-		
-		  public Object getValueAt(int row, int column) {
-		    return data.get(row).get(column);
-		  }
-		
-		  public Class getColumnClass(int column) {
-		    return (getValueAt(0, column).getClass());
-		  }
-		
-		  public void setValueAt(Object value, int row, int column) {
-			  data.get(row).set(column, value);
-		  }
-		
-		  public boolean isCellEditable(int row, int column) {
-			  return (column != 0);
-		  }
-	}
-	
 	@Override
 	protected void createButtons() {
-		createButton = new JButton("Crear");
-		deleteButton = new JButton("Borrar");
-		buttonsPanel = new JPanel(new FlowLayout());
-		buttonsPanel.add(createButton);
-		buttonsPanel.add(deleteButton);
+		super.createButtons();
 		createButton.addActionListener(this);
+		modifyButton.addActionListener(this);
 		deleteButton.addActionListener(this);
-		add(buttonsPanel,BorderLayout.SOUTH);
 	}
 	
 	private void updateColums(){
@@ -188,24 +142,28 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		dataTable.repaint();
 	}
 	
-	public void updateRows() {
-		users = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
-		tm.updateRows();
-		tm.fireTableDataChanged();
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == createButton) {
 			new CreateUsuarioDialog(this, this.mc);
 		}
+		if(e.getSource() == modifyButton) {
+			new CreateUsuarioDialog(this,this.mc,(Usuario)entities.get(indexTableSelected));
+		}
 		if(e.getSource() == deleteButton) {
-			Usuario us = (Usuario)users.get(indexTableSelected);
+			Usuario us = (Usuario)entities.get(indexTableSelected);
 			String me = (String)tm.getValueAt(indexTableSelected, 0);
 			new DeleteConfirm(this, us, me);
 		}
 		if(e.getSource() == direccionCB || e.getSource() == horasCB || e.getSource() == modalidadCB) {
 			updateColums();
 		}
+	}
+
+	@Override
+	protected void updateTable() {
+		entities = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
+		tm.updateRows(createRows());
+		tm.fireTableDataChanged();
 	}
 }

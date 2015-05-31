@@ -11,13 +11,14 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class DBMessage extends JDialog implements ActionListener {
 	JButton buttonOK;
 	public DBMessage(JDialog owner, String msg) {
 		super(owner);
 		JLabel message = new JLabel("Error - " + msg);
 		if(msg=="")
-			message.setText("Usuario añadido con exito");
+			message.setText("Añadido con exito");
 		else
 			message.setForeground(Color.red);
 		message.setBorder(BorderFactory.createEmptyBorder(20,5,20,5));
@@ -37,7 +38,7 @@ public class DBMessage extends JDialog implements ActionListener {
 		c.gridwidth = 1;
 		
 		add(buttonOK,c);
-		setLocationRelativeTo(this);
+		setLocationRelativeTo(owner);
 		pack();
 		setVisible(true);
 	}

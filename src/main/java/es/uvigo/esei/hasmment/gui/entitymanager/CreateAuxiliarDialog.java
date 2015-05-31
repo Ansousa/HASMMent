@@ -6,6 +6,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,32 +21,36 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
+import es.uvigo.esei.hasmment.entities.Auxiliar;
 import es.uvigo.esei.hasmment.entities.Usuario;
 import es.uvigo.esei.hasmment.gui.MainContent;
 import es.uvigo.esei.hasmment.gui.MainFrame;
 
-public class CreateUsuarioDialog extends JDialog implements ActionListener{	
-	JLabel dniL,nombreL,apellido1L,apellido2L,direccionL,horasL,modalidadL;
+public class CreateAuxiliarDialog extends JDialog implements ActionListener{	
+	JLabel dniL,nombreL,apellido1L,apellido2L,horasL,fInicioCL,fFinCL;
 	JTextField dniTF,nombreTF,apellido1TF,apellido2TF,horasTF;
+	
+	UtilDateModel dateModelInicio, dateModelFin;
+	JDatePanelImpl datePanelInicio, datePanelFin;
+	JDatePickerImpl datePickerfInicio, datePickerfFin;
 	
 	MainContent mc;
 	ConsultDialog owner;
 	
-	JTextArea direccionTA;
-	JComboBox<String> modalidadCB;
-	JButton createButton,clearButton;
-	
+	Auxiliar auxModify;
 	Boolean modify;
 	
-	String modalidades[] = {"-", "Dependencia", "Prestación Básica" };
+	JButton createButton,clearButton;
 	
-	Usuario userModifiy;
-	
-	public CreateUsuarioDialog(ConsultDialog owner, MainContent mc) {
+	public CreateAuxiliarDialog(ConsultDialog owner, MainContent mc) {
 		super(owner);
 		this.mc = mc;
 		this.owner = owner;
@@ -49,31 +58,31 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		initCreateDialog();
 	}
 	
-	public CreateUsuarioDialog(ConsultDialog owner, MainContent mc, Usuario u) {
+	public CreateAuxiliarDialog(ConsultDialog owner, MainContent mc, Auxiliar a){
 		super(owner);
 		this.mc = mc;
 		this.owner = owner;
-		this.userModifiy = u;
+		this.auxModify = a;
 		initCreateDialog();
 		modify = true;
 		setToModify();
 	}
 	
-	private void setToModify() {
-		dniTF.setText(userModifiy.getDni());
+	private void setToModify(){
+		dniTF.setText(auxModify.getDni());
 		dniTF.setEditable(false);
-		nombreTF.setText(userModifiy.getNombre());
-		apellido1TF.setText(userModifiy.getApellido1());
-		apellido2TF.setText(userModifiy.getApellido2());
-		direccionTA.setText(userModifiy.getDireccion());
-		horasTF.setText(new Integer(userModifiy.getHoras()).toString());
-		modalidadCB.setSelectedItem(userModifiy.getModalidad());
+		nombreTF.setText(auxModify.getNombre());
+		apellido1TF.setText(auxModify.getApellido1());
+		apellido2TF.setText(auxModify.getApellido2());
+		horasTF.setText(new Integer(auxModify.getHoras()).toString());
+		dateModelInicio.setValue(auxModify.getFechaInicioContrato());
+		dateModelFin.setValue(auxModify.getFechaFinContrato());
+		createButton.setText("Modificar");
 	}
 	
 	private void initCreateDialog() {
 		setLocationRelativeTo(this.getOwner());
-		setTitle("Crear Usuario");
-		//setModal(true);
+		setTitle("Crear Auxiliar");
 		add(createForm());
 		setVisible(true);
 		pack();
@@ -84,17 +93,13 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		
 		nombreTF = new JTextField("",20);
 		apellido1TF = new JTextField("",20);
-		apellido2TF = new JTextField("",20);
-		direccionTA = new JTextArea(2,20);
-		
-		horasTF = new JTextField("",2);
-		
+		apellido2TF = new JTextField("",20);		
+		horasTF = new JTextField("",2);	
 		
 		dniL = new JLabel("DNI");
 		nombreL = new JLabel("Nombre");
 		apellido1L = new JLabel("Primer Apellido");
 		apellido2L = new JLabel("Segundo Apellido");
-		direccionL = new JLabel("Direccion");
 		horasL = new JLabel("Horas");
 		
 		createButton = new JButton("Crear");
@@ -118,19 +123,32 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		form.add(apellido2L);
 		form.add(apellido2TF);
 		
-		form.add(direccionL);
-		form.add(direccionTA);
-		
 		form.add(horasL);
 		form.add(horasTF);
-		
+			
 		form.setLayout(new GridLayout(8,2,10,10));
+		fInicioCL = new JLabel("Fecha Inicio Contrato");
+		fFinCL = new JLabel("Fecha Fin Contrato");
 		
-		modalidadL = new JLabel("Modalidad");
-		modalidadCB = new JComboBox<String>(modalidades);
+		Properties p = new Properties();
+		p.put("text.today", "Hoy");
+		p.put("text.month", "Mes");
+		p.put("text.year", "Año");
 		
-		form.add(modalidadL);
-		form.add(modalidadCB);
+		dateModelInicio = new UtilDateModel();
+		dateModelFin = new UtilDateModel();
+		
+		datePanelInicio = new JDatePanelImpl(dateModelInicio,p);
+		datePanelFin = new JDatePanelImpl(dateModelFin,p);
+		
+		datePickerfInicio = new JDatePickerImpl(datePanelInicio, new DateFormatter());
+		datePickerfFin = new JDatePickerImpl(datePanelFin, new DateFormatter());
+		
+		form.add(fInicioCL);
+		form.add(datePickerfInicio);
+		
+		form.add(fFinCL);
+		form.add(datePickerfFin);
 		
 		form.add(createButton);
 		form.add(clearButton);
@@ -138,37 +156,24 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		return form;
 	}
 	
-	private void createUserAction() throws Exception{
+	private void createAuxAction() throws Exception{
+		java.util.Date d = (java.util.Date) dateModelInicio.getValue();
+		java.sql.Date dateInicio = new java.sql.Date(d.getTime());
 		
-		try{
-			checkUsuarioForm();
-		}
-		catch(DNIWrongFormatException ex1) {
-			throw ex1;
-		}
-		catch(Exception ex2) {
-			throw ex2;
-		}
-		 
-		Usuario u = new Usuario(
-					dniTF.getText(), 
-					nombreTF.getText(), 
-					apellido1TF.getText(), 
-					apellido2TF.getText(), 
-					direccionTA.getText(), 
-					Integer.parseInt(horasTF.getText()), 
-					(String)modalidadCB.getSelectedItem());
+		d = (java.util.Date) dateModelFin.getValue();
+		java.sql.Date dateFin = new java.sql.Date(d.getTime());
 		
-		if(!modify)
-			HibernateMethods.saveEntity(u);
-		else
-			HibernateMethods.modifyEntity(u);
-		this.owner.updateTable();
-	}
-	
-	private void checkUsuarioForm() throws Exception{
-		if(!CheckForms.checkDNI(dniTF.getText().trim())) {
-			throw new DNIWrongFormatException(dniTF.getText());
+		Auxiliar a = new Auxiliar(
+				dniTF.getText(), 
+				nombreTF.getText(), 
+				apellido1TF.getText(), 
+				apellido2TF.getText(), 
+				Integer.parseInt(horasTF.getText()),
+				dateInicio,
+				dateFin
+				);
+		if(!CheckForms.checkDNI(a.getDni())){
+			throw new DNIWrongFormatException(a.getDni());
 		}
 		else if(nombreTF.getText().trim().isEmpty()) {
 			throw new Exception("El campo NOMBRE no puede estar VACIO");
@@ -176,11 +181,15 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		else if(apellido1TF.getText().trim().isEmpty()) {
 			throw new Exception("El campo PRIMER APELLIDO no puede estar VACIO");
 		}
-		else if(direccionTA.getText().trim().isEmpty()){
-			throw new Exception("El campo DIRECCION no puede estar vacio");
+		else if(a.getFechaInicioContrato().after(a.getFechaFinContrato())){
+			throw new Exception("El campo Fecha Inicio Contrato no puede ser menor que Fecha Fin Contrato");			
 		}
-		else if(modalidadCB.getSelectedItem() == "-") {
-			throw new Exception("No se ha seleccionado una MODALIDAD");
+		else {
+			if(!modify)
+				HibernateMethods.saveEntity(a);
+			else
+				HibernateMethods.modifyEntity(a);
+			this.owner.updateTable();
 		}
 	}
 	
@@ -189,16 +198,16 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		nombreTF.setText("");
 		apellido1TF.setText("");
 		apellido2TF.setText("");
-		direccionTA.setText("");
 		horasTF.setText("");
-		modalidadCB.setSelectedIndex(0);
+		dateModelInicio.setValue(null);
+		dateModelFin.setValue(null);
 	}
 
 	public void actionPerformed(ActionEvent e) { 
 		String msg="";
 		if(e.getSource() == createButton) {
 			try{
-				createUserAction();
+				createAuxAction();
 			}
 			catch (ConstraintViolationException ex2) {
 				msg =  "DNI duplicado";
@@ -208,6 +217,9 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 			}
 			catch(NumberFormatException ex) {
 				msg = "Formato de numero de horas incorrecto";
+			}
+			catch(NullPointerException ex4) {
+				msg = "Los campos de FECHA no pueden ser VACIOS";
 			}
 			catch(Exception ex0){
 				msg = ex0.getMessage();
