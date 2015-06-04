@@ -12,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.joda.time.DateTime;
 
+import com.mysql.jdbc.util.TimezoneDump;
+
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.gui.overallview.SelectMonthPanel;
 import es.uvigo.esei.hasmment.gui.overallview.ShowAuxsOverall;
@@ -33,10 +35,11 @@ public class MainContent extends JPanel{
 		setBorder(new EmptyBorder(50, 50, 50, 50));
 		setLayout(new BorderLayout(5, 50));
 		DateTime lastMonth = new DateTime(HibernateMethods.getLastDateAsist().getYear(), HibernateMethods.getLastDateAsist().getMonthOfYear(), 1, 0, 0);
-		
+		JLabel showMonth = new JLabel();
 		JPanel head = new JPanel(new BorderLayout());
 		JPanel show = new JPanel(new FlowLayout());
-		JLabel showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(lastMonth.getMonthOfYear()));
+		if(lastMonth.equals(new DateTime(1)))
+			showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(lastMonth.getMonthOfYear()));
 		showMonth.setFont(new Font("Arial", 1, 40));
 		show.add(showMonth);
 		head.add(show, BorderLayout.NORTH);
@@ -50,10 +53,11 @@ public class MainContent extends JPanel{
 	public void updateMainContent() {
 		this.removeAll();
 		DateTime lastMonth = new DateTime(HibernateMethods.getLastDateAsist().getYear(), HibernateMethods.getLastDateAsist().getMonthOfYear(), 1, 0, 0);
-		
+		JLabel showMonth = new JLabel();
 		JPanel head = new JPanel(new BorderLayout());
 		JPanel show = new JPanel(new FlowLayout());
-		JLabel showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(lastMonth.getMonthOfYear()));
+		if(lastMonth.equals(new DateTime(1)))
+			showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(lastMonth.getMonthOfYear()));
 		showMonth.setFont(new Font("Arial", 1, 40));
 		show.add(showMonth);
 		head.add(show, BorderLayout.NORTH);
@@ -68,7 +72,6 @@ public class MainContent extends JPanel{
 	
 	public void updateMainContent(DateTime month) {
 		this.removeAll();
-		
 		JPanel head = new JPanel(new BorderLayout());
 		JPanel show = new JPanel(new FlowLayout());
 		JLabel showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(month.getMonthOfYear()));

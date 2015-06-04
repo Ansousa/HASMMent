@@ -23,6 +23,7 @@ import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.Asiste;
 import es.uvigo.esei.hasmment.entities.Auxiliar;
 import es.uvigo.esei.hasmment.entities.DBEntity;
+import es.uvigo.esei.hasmment.entities.Usuario;
 
 @SuppressWarnings("serial")
 public class ShowAuxsOverall extends JPanel{
@@ -76,14 +77,9 @@ public class ShowAuxsOverall extends JPanel{
 					Interval i = new Interval(inicio.minus(new Integer(inicio.getMinuteOfDay())*60*1000),fin.minus(new Integer(fin.getMinuteOfDay())*60*1000));
 					int h = map.get(a.getDniAuxiliar()) + value;
 					int days = (int)(i.toDurationMillis()/(24*1000*60*60)+1);
-					map.put(a.getDniAuxiliar(), h*days);
+					result.addValue(new Double(h*days), HibernateMethods.getUsuario(a.getDniUsuario()).getNombre(),HibernateMethods.getAuxiliar(a.getDniAuxiliar()).getNombre());
 				}
-				/*
-				columnKey = HibernateMethods.getAuxiliar(a.getDniAuxiliar()).getNombre();
-				rowKey = HibernateMethods.getUsuario(a.getDniUsuario()).getNombre();
-				result.addValue(value, rowKey, columnKey);*/
 			}
-	        System.out.println(map);
 	        return result;
 	    }
 	    

@@ -236,8 +236,10 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 			throw new Exception("El campo ACTIVIDAD no puede estar VACIO");
 		}
 		else{
-			if(!modify)
+			if(!modify){
+				System.out.println(a.toString());
 				HibernateMethods.saveEntity(a);
+			}
 			else
 				HibernateMethods.modifyEntity(a);
 			this.owner.updateTable();

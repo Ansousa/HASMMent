@@ -8,10 +8,10 @@
 		<composite-id>
     		<key-property name="dniUsuario" column="DNI_USU_ASI" type="string"/>
         	<key-property name="dniAuxiliar" column="DNI_AUX_ASI" type="string"/>
+        	<key-property name="fechaHoraInicioAsistencia" column="FHORAINICIO_ASI" type="timestamp"/>
 		</composite-id> 
 		<!--  <id name="dniUsuario" column="DNI_USU_ASI" type="string"/>
 		<property name="dniAuxiliar" column="DNI_AUX_ASI" type="string"/>-->
-        <property name="fechaHoraInicioAsistencia" column="FHORAINICIO_ASI" type="timestamp"/>
         <property name="fechaHoraFinAsistencia" column="FHORAFIN_ASI" type="timestamp"/>
         <property name="actividad" column="ACTIVIDAD_ASI" type="string"/>
 	</class>

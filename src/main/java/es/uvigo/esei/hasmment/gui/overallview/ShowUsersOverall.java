@@ -47,6 +47,7 @@ public class ShowUsersOverall extends JPanel{
 	}
 	
 	private Interval getInterval(DateTime month){
+		System.out.println(month);
 		DateTime start = new DateTime(month);
 		DateTime end = new DateTime(month.plusMonths(1).minusDays(1));
 		Interval i = new Interval(start, end);
@@ -125,7 +126,7 @@ public class ShowUsersOverall extends JPanel{
 		ArrayList<DBEntity> toRet = new ArrayList<DBEntity>();
 		for (DBEntity dbEntity : asists) {
 			Asiste a = (Asiste) dbEntity;
-			if(a.getDniUsuario().equals(u.getDni()) && intervalToShow.contains(new DateTime(a.getFechaHoraInicioAsistencia()))){
+			if(a.getDniUsuario().equals(u.getDni()) && intervalToShow.contains(a.getFechaHoraInicioAsistencia().getTime())){
 				toRet.add(a);
 			}
 		}
@@ -137,7 +138,7 @@ public class ShowUsersOverall extends JPanel{
 		for (DBEntity dbEntity : asists) {
 			Asiste a = (Asiste) dbEntity;
 			long diff = a.getFechaHoraFinAsistencia().getTime() - a.getFechaHoraInicioAsistencia().getTime();
-			int numberDays = (int) (diff/(24*60*60*1000));
+			int numberDays = (int) (diff/(24*60*60*1000))+1;
 			//Restamos los dias de permiso
 			numberDays -= checkDaysPermiso(a);
 			DateTime dtInicio = new DateTime(a.getFechaHoraInicioAsistencia());
