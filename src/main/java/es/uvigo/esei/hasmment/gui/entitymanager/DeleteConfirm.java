@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.DBEntity;
+import es.uvigo.esei.hasmment.gui.MainContent;
 
 /* JDialog que nos pedirá la confirmación para eliminar una entidad en la base de datos*/
 @SuppressWarnings("serial")
@@ -20,12 +21,14 @@ public class DeleteConfirm extends JDialog implements ActionListener{
 	JButton buttonOK,buttonCancel;
 	String identity;
 	ConsultDialog owner;
+	MainContent mc;
 	
-	public DeleteConfirm(ConsultDialog owner, DBEntity entity, String identity) {
+	public DeleteConfirm(ConsultDialog owner, DBEntity entity, MainContent mc,String identity) {
 		super(owner);
 		this.entity = entity;
 		this.identity = identity;
 		this.owner = owner;
+		this.mc = mc;
 		initDialog();
 		setLocationRelativeTo(owner);
 		pack();
@@ -63,6 +66,7 @@ public class DeleteConfirm extends JDialog implements ActionListener{
 		if(e.getSource() == buttonOK){
 			HibernateMethods.deleteEntity(this.entity);
 			this.owner.updateTable();
+			this.mc.updateMainContent();
 			this.dispose();
 		}
 		if(e.getSource() == buttonCancel){

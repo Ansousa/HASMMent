@@ -5,15 +5,19 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableColumn;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
@@ -33,7 +37,7 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 	
 	public ConsultUsuarioDialog(MainFrame owner, MainContent mc) {
 		super(owner, mc);
-		indexTableSelected = 0;
+		indexTableSelected = -1;
 		this.entities = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
 		setUsuarioDialog();
 	}
@@ -50,6 +54,33 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 	
 	@Override
 	protected void createCheckBoxes() {
+		JPanel root = new JPanel(new BorderLayout());
+		JPanel searchPanel = new JPanel(new FlowLayout());
+		
+		buscarL = new JLabel("Buscar");
+		buscarTF = new JTextField("", 20);
+		
+		buscarTF.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				entities = HibernateMethods.searchInUsuario(buscarTF.getText());
+				tm.updateRows(createRows());
+				tm.fireTableDataChanged();
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {		
+			}
+		});
+		
+		searchPanel.add(buscarL);
+		searchPanel.add(buscarTF);
+		
 		direccionCB = new JCheckBox("Direccion");
 		horasCB = new JCheckBox("Horas");
 		modalidadCB = new JCheckBox("Modalidad");
@@ -67,7 +98,9 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		checkPanel.add(horasCB);
 		checkPanel.add(modalidadCB);
 		
-		add(checkPanel,BorderLayout.NORTH);
+		root.add(searchPanel,BorderLayout.NORTH);
+		root.add(checkPanel,BorderLayout.SOUTH);
+		add(root,BorderLayout.NORTH);
 	}
 	
 	private Vector<Vector> createRows() {
@@ -147,13 +180,13 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		if(e.getSource() == createButton) {
 			new CreateUsuarioDialog(this, this.mc);
 		}
-		if(e.getSource() == modifyButton) {
+		if(e.getSource() == modifyButton && indexTableSelected >= 0) {
 			new CreateUsuarioDialog(this,this.mc,(Usuario)entities.get(indexTableSelected));
 		}
-		if(e.getSource() == deleteButton) {
+		if(e.getSource() == deleteButton && indexTableSelected >= 0) {
 			Usuario us = (Usuario)entities.get(indexTableSelected);
 			String me = (String)tm.getValueAt(indexTableSelected, 0);
-			new DeleteConfirm(this, us, me);
+			new DeleteConfirm(this, us, mc, me);
 		}
 		if(e.getSource() == direccionCB || e.getSource() == horasCB || e.getSource() == modalidadCB) {
 			updateColums();

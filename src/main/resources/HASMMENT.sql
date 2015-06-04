@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-05-2015 a las 00:11:24
+-- Tiempo de generación: 04-06-2015 a las 07:13:39
 -- Versión del servidor: 5.5.43-0ubuntu0.14.04.1
 -- Versión de PHP: 5.5.9-1ubuntu4.9
 
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `asiste` (
   `DNI_USU_ASI` varchar(9) COLLATE latin1_spanish_ci NOT NULL COMMENT 'DNI del usuario',
   `DNI_AUX_ASI` varchar(9) COLLATE latin1_spanish_ci NOT NULL COMMENT 'DNI del auxiliar',
-  `FHORAINICIO_ASI` datetime DEFAULT NULL COMMENT 'Fecha y hora de inicio de la asistencia',
+  `FHORAINICIO_ASI` datetime NOT NULL COMMENT 'Fecha y hora de inicio de la asistencia',
   `FHORAFIN_ASI` datetime DEFAULT NULL COMMENT 'Fecha y hora de fin de la asistencia',
   `ACTIVIDAD_ASI` blob NOT NULL COMMENT 'Descripcion breve de la asistencia',
-  PRIMARY KEY (`DNI_USU_ASI`,`DNI_AUX_ASI`),
+  PRIMARY KEY (`DNI_USU_ASI`,`DNI_AUX_ASI`,`FHORAINICIO_ASI`),
   KEY `FK_ASI_AUX` (`DNI_AUX_ASI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
@@ -58,8 +58,10 @@ CREATE TABLE IF NOT EXISTS `auxiliar` (
 --
 
 INSERT INTO `auxiliar` (`DNI_AUX`, `NOMBRE_AUX`, `APELLIDO1_AUX`, `APELLIDO2_AUX`, `HORAS_AUX`, `FINICIO_AUX`, `FFIN_AUX`) VALUES
-('22222222J', 'Auxiliar1', 'Auxiliarez1', '', 40, '2015-05-18', '2015-05-18'),
-('44496465K', 'Adrian', 'Novoa', 'Sousa', 21, '2015-05-18', '2015-05-18');
+('22222222J', 'Jose', 'Lopez', 'Lopez', 10, '2015-05-28', '2015-06-07'),
+('22222223Z', 'Luis', 'Martinez', 'Rodriguez', 20, '2015-05-28', '2015-06-12'),
+('22222224S', 'Manuel', 'Castro', 'Ramirez', 30, '2015-06-06', '2015-06-25'),
+('22222225Q', 'Paco', 'Gomez', 'Novoa', 40, '2015-06-27', '2015-08-22');
 
 -- --------------------------------------------------------
 
@@ -80,7 +82,8 @@ CREATE TABLE IF NOT EXISTS `permiso` (
 --
 
 INSERT INTO `permiso` (`DNI_AUX_PER`, `FINICIO_PER`, `FFIN_PER`, `TIPO_PER`) VALUES
-('22222222J', '2015-05-19', '2015-05-22', 'Vacaciones');
+('22222222J', '2015-06-22', '2015-06-26', 'Vacaciones'),
+('22222224S', '2015-06-22', '2015-06-23', 'Asuntos propios');
 
 -- --------------------------------------------------------
 
@@ -104,8 +107,10 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`DNI_USU`, `NOMBRE_USU`, `APELLIDO1_USU`, `APELLIDO2_USU`, `DIRECCION_USU`, `HORAS_USU`, `MODALIDAD_USU`) VALUES
-('11111111H', 'Usuario1', 'Usuariez', '', 'Calle manolez		', 40, 'Dependencia'),
-('44496465K', 'Adrian', 'Novoa', 'Sousa', '12', 12, 'Dependencia');
+('11111111H', 'Alvaro', 'Alvarez', 'Alvarez', 'Casa de Alvaro	', 10, 'Dependencia'),
+('11111112L', 'Brais', 'Vazquez', 'Vazquez', 'Casa de Brais', 20, 'Dependencia'),
+('11111113C', 'Carlos', 'Martinez', 'Martinez', 'Casa de Carlos', 30, 'Prestación Básica'),
+('11111114K', 'David', 'Rodriguez', 'Rodriguez', 'Casa de David', 40, 'Prestación Básica');
 
 --
 -- Restricciones para tablas volcadas

@@ -54,7 +54,7 @@ public class CreateAuxiliarDialog extends JDialog implements ActionListener{
 		super(owner);
 		this.mc = mc;
 		this.owner = owner;
-		modify = false;
+		this.modify = false;
 		initCreateDialog();
 	}
 	
@@ -63,8 +63,8 @@ public class CreateAuxiliarDialog extends JDialog implements ActionListener{
 		this.mc = mc;
 		this.owner = owner;
 		this.auxModify = a;
+		this.modify = true;
 		initCreateDialog();
-		modify = true;
 		setToModify();
 	}
 	
@@ -82,7 +82,10 @@ public class CreateAuxiliarDialog extends JDialog implements ActionListener{
 	
 	private void initCreateDialog() {
 		setLocationRelativeTo(this.getOwner());
-		setTitle("Crear Auxiliar");
+		if(modify)
+			setTitle("Modificar Auxiliar");
+		else
+			setTitle("Crear Auxiliar");
 		add(createForm());
 		setVisible(true);
 		pack();
@@ -190,6 +193,7 @@ public class CreateAuxiliarDialog extends JDialog implements ActionListener{
 			else
 				HibernateMethods.modifyEntity(a);
 			this.owner.updateTable();
+			this.mc.updateMainContent();
 		}
 	}
 	
@@ -230,9 +234,9 @@ public class CreateAuxiliarDialog extends JDialog implements ActionListener{
 		}
 		else if(e.getSource() == clearButton) {
 			if(!modify)
-				clearAction();
-			else
 				setToModify();
+			else
+				clearAction();
 		}
 	}
 }

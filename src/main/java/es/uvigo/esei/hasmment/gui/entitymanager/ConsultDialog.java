@@ -6,9 +6,12 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.TableColumnModel;
 
 import es.uvigo.esei.hasmment.entities.DBEntity;
@@ -20,6 +23,9 @@ import es.uvigo.esei.hasmment.gui.MainFrame;
 public abstract class ConsultDialog extends JDialog{
 	protected MainContent mc;
 	protected MainFrame owner;
+	
+	protected JLabel buscarL;
+	protected JTextField buscarTF;
 	
 	protected JTable dataTable;
 	protected JButton createButton, modifyButton, deleteButton;

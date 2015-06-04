@@ -7,18 +7,19 @@ import javax.swing.JFrame;
 
 import es.uvigo.esei.hasmment.dao.HibernateFactory;
 
+//http://paletton.com/#uid=13M0u0kmnmS5ru7dqr2tAiTL3ew
 public class MainFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	public MainFrame() {
-		initGUI();
+		initGUI();	
 	}
-	
 	private void initGUI(){
 		//Inicializando los parametros
 		setTitle("HASMment");
 		setDefaultCloseOperation(closeWindow());
 		setMinimumSize(new Dimension(0, 300));
+		
 		//Añadiendo las partes
 		MainContent mC = new MainContent(this);
 		

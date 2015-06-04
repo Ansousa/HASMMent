@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -12,9 +14,11 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -37,7 +41,7 @@ public class ConsultPermisoDialog extends ConsultDialog implements ActionListene
 	
 	public ConsultPermisoDialog(MainFrame owner, MainContent mc) {
 		super(owner, mc);
-		indexTableSelected = 0;
+		indexTableSelected = -1;
 		this.entities = HibernateMethods.getListEntities(HibernateEntities.PERMISO);
 		setPermisoDialog();
 	}
@@ -54,6 +58,33 @@ public class ConsultPermisoDialog extends ConsultDialog implements ActionListene
 	
 	@Override
 	protected void createCheckBoxes() {
+		JPanel root = new JPanel(new BorderLayout());
+		JPanel searchPanel = new JPanel(new FlowLayout());
+		
+		buscarL = new JLabel("Buscar");
+		buscarTF = new JTextField("", 20);
+		
+		buscarTF.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				entities = HibernateMethods.searchInPermiso(buscarTF.getText());
+				tm.updateRows(createRows());
+				tm.fireTableDataChanged();
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {		
+			}
+		});
+		
+		searchPanel.add(buscarL);
+		searchPanel.add(buscarTF);
+		
 		fechaFinPermisoCB = new JCheckBox("Fecha Fin Permiso");
 		tipoPermisoCB = new JCheckBox("Tipo permiso");
 		
@@ -67,7 +98,9 @@ public class ConsultPermisoDialog extends ConsultDialog implements ActionListene
 		checkPanel.add(fechaFinPermisoCB);
 		checkPanel.add(tipoPermisoCB);
 		
-		add(checkPanel,BorderLayout.NORTH);
+		root.add(searchPanel,BorderLayout.NORTH);
+		root.add(checkPanel,BorderLayout.SOUTH);
+		add(root,BorderLayout.NORTH);
 	}
 	
 	private Vector<Vector> createRows() {
@@ -142,13 +175,13 @@ public class ConsultPermisoDialog extends ConsultDialog implements ActionListene
 		if(e.getSource() == createButton) {
 			new CreatePermisoDialog(this, this.mc);
 		}
-		if(e.getSource() == modifyButton) {
+		if(e.getSource() == modifyButton && indexTableSelected >= 0) {
 			new CreatePermisoDialog(this, this.mc, (Permiso)entities.get(indexTableSelected));
 		}
-		if(e.getSource() == deleteButton) {
+		if(e.getSource() == deleteButton && indexTableSelected >= 0) {
 			Permiso pe = (Permiso)entities.get(indexTableSelected);
 			String me = (String)tm.getValueAt(indexTableSelected, 0);
-			new DeleteConfirm(this, pe, me);
+			new DeleteConfirm(this, pe, mc, me);
 		}
 		if(e.getSource() == fechaFinPermisoCB || e.getSource() == tipoPermisoCB) {
 			updateColums();

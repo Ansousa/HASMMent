@@ -55,6 +55,7 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 	
 	Asiste asistModify;
 	Boolean modify;
+	JTextField auxiliarTF,usuarioTF,fechaInicioTF,timeInicioTF;
 	
 	JButton createButton, clearButton;
 	
@@ -80,8 +81,8 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 		Usuario u = HibernateMethods.getUsuario(asistModify.getDniUsuario());
 		Auxiliar a = HibernateMethods.getAuxiliar(asistModify.getDniAuxiliar());
 		
-		usuarioCB.setSelectedItem(u.getDni() + ", " + u.getNombre());
-		auxiliarCB.setSelectedItem(a.getDni() + ", " + a.getNombre());
+		usuarioTF.setText(u.getDni() + ", " + u.getNombre());
+		auxiliarTF.setText(a.getDni() + ", " + a.getNombre());
 		
 		timeInicioS.setValue(asistModify.getFechaHoraInicioAsistencia());
 		dateModelInicio.setValue(asistModify.getFechaHoraInicioAsistencia());
@@ -90,12 +91,17 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 		dateModelFin.setValue(asistModify.getFechaHoraFinAsistencia());
 		
 		actividadTF.setText(asistModify.getActividad());
+		
+		createButton.setText("Modificar");
 	}
 	
 	private void initCreateDialog(){
 		users = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
 		auxs =  HibernateMethods.getListEntities(HibernateEntities.AUXILIAR);
-		setTitle("Crear Asistencia");
+		if(modify)
+			setTitle("Modificar Asistencia");
+		else
+			setTitle("Crear Asistencia");
 		add(createForm());
 		setLocationRelativeTo(this.getOwner());
 		setVisible(true);
@@ -161,10 +167,22 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 		form.setLayout(new GridLayout(8, 2));
 		
 		form.add(usuarioL);
-		form.add(usuarioCB);
+		if(modify){
+			usuarioTF = new JTextField("");
+			usuarioTF.setEditable(false);
+			form.add(usuarioTF);
+		}
+		else
+			form.add(usuarioCB);
 		
 		form.add(auxiliarL);
-		form.add(auxiliarCB);
+		if(modify){
+			auxiliarTF = new JTextField("");
+			auxiliarTF.setEditable(false);
+			form.add(auxiliarTF);
+		}
+		else
+			form.add(auxiliarCB);
 		
 		form.add(timeInicioAsisteL);
 		form.add(timeInicioS);
@@ -223,6 +241,7 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 			else
 				HibernateMethods.modifyEntity(a);
 			this.owner.updateTable();
+			this.mc.updateMainContent();
 		}
 	}
 	
@@ -242,6 +261,7 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 			String msg="";
 			try{
 				createAsisteAction();
+				this.dispose();
 			}
 			catch(ConstraintViolationException ex1) {
 				msg = "Asistencia duplicada";
@@ -258,9 +278,9 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 		}
 		if(e.getSource() == clearButton ) {
 			if(!modify)
-				clearAction();
-			else
 				setToModify();
+			else
+				clearAction();
 		}
 	}
 		

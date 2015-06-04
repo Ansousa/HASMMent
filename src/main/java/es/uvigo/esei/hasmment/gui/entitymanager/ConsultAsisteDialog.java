@@ -5,15 +5,19 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableColumn;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
@@ -35,7 +39,7 @@ public class ConsultAsisteDialog extends ConsultDialog implements ActionListener
 	
 	public ConsultAsisteDialog(MainFrame owner, MainContent mc) {
 		super(owner, mc);
-		indexTableSelected = 0;
+		indexTableSelected = -1;
 		this.entities = HibernateMethods.getListEntities(HibernateEntities.ASISTE);
 		setAsisteDialog();
 	}
@@ -52,6 +56,33 @@ public class ConsultAsisteDialog extends ConsultDialog implements ActionListener
 
 	@Override
 	protected void createCheckBoxes() {
+		JPanel root = new JPanel(new BorderLayout());
+		JPanel searchPanel = new JPanel(new FlowLayout());
+		
+		buscarL = new JLabel("Buscar");
+		buscarTF = new JTextField("", 20);
+		
+		buscarTF.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				entities = HibernateMethods.searchInAsiste(buscarTF.getText());
+				tm.updateRows(createRows());
+				tm.fireTableDataChanged();
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {		
+			}
+		});
+		
+		searchPanel.add(buscarL);
+		searchPanel.add(buscarTF);
+		
 		timeFinAsisteCB = new JCheckBox("Fin Asistencia");
 		actividadCB = new JCheckBox("Actividad");
 		
@@ -65,7 +96,9 @@ public class ConsultAsisteDialog extends ConsultDialog implements ActionListener
 		checkPanel.add(timeFinAsisteCB);
 		checkPanel.add(actividadCB);
 		
-		add(checkPanel,BorderLayout.NORTH);
+		root.add(searchPanel,BorderLayout.NORTH);
+		root.add(checkPanel,BorderLayout.SOUTH);
+		add(root,BorderLayout.NORTH);
 	}
 	
 	private Vector<Vector> createRows() {
@@ -150,13 +183,13 @@ public class ConsultAsisteDialog extends ConsultDialog implements ActionListener
 		if(e.getSource() == createButton) {
 			new CreateAsisteDialog(this, this.mc);
 		}
-		if(e.getSource() == modifyButton) {
+		if(e.getSource() == modifyButton && indexTableSelected >= 0) {
 			new CreateAsisteDialog(this, this.mc, (Asiste)entities.get(indexTableSelected));
 		}
-		if(e.getSource() == deleteButton) {
+		if(e.getSource() == deleteButton && indexTableSelected >= 0) {
 			Asiste as = (Asiste)entities.get(indexTableSelected);
 			String me = (String)tm.getValueAt(indexTableSelected, 0);
-			new DeleteConfirm(this, as, me);
+			new DeleteConfirm(this, as, mc, me);
 		}
 		if(e.getSource() == timeFinAsisteCB || e.getSource() == actividadCB) {
 			updateColums();

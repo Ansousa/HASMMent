@@ -1,5 +1,6 @@
 package es.uvigo.esei.hasmment.gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,8 +17,26 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private MainFrame owner;
 	private MainContent mc;
-	private JMenu userMenu,auxMenu,perMenu,asistMenu;
-	private JMenuItem consultUserItem,consultAuxItem,consultPerItem,consultAsistItem;
+	private Menu userMenu,auxMenu,perMenu,asistMenu;
+	private MenuItem consultUserItem,consultAuxItem,consultPerItem,consultAsistItem;
+	
+	@SuppressWarnings("serial")
+	private class Menu extends JMenu{
+		public Menu(String text){
+			super(text);
+			setBackground(new Color(21, 43, 85));
+			setForeground(Color.WHITE);
+		}
+	}
+	
+	@SuppressWarnings("serial")
+	private class MenuItem extends JMenuItem{
+		public MenuItem(String text){
+			super(text);
+			setBackground(new Color(21, 43, 85));
+			setForeground(Color.WHITE);
+		}
+	}
 	
 	public MenuBar(MainFrame owner, MainContent mc){
 		this.owner = owner;
@@ -26,35 +45,36 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	}
 	
 	private void initMenuBar(){
+		setBackground(new Color(6, 23, 57));
 		/*Menu Usuarios*/
-		userMenu = new JMenu("Gestion Usuarios");
+		userMenu = new Menu("Gestion Usuarios");
 		add(userMenu);
 		
-		consultUserItem = new JMenuItem("Consultar Usuarios");
+		consultUserItem = new MenuItem("Consultar Usuarios");
 		consultUserItem.addActionListener(this);
 		userMenu.add(consultUserItem);
 		
 		/*Menu Auxiliares*/
-		auxMenu = new JMenu("Gestion Auxiliares");
+		auxMenu = new Menu("Gestion Auxiliares");
 		add(auxMenu);
 		
-		consultAuxItem = new JMenuItem("Consultar Auxiliares");
+		consultAuxItem = new MenuItem("Consultar Auxiliares");
 		consultAuxItem.addActionListener(this);
 		auxMenu.add(consultAuxItem);
 		
 		/*Menu Permisos*/
-		perMenu = new JMenu("Gestion Permisos");
+		perMenu = new Menu("Gestion Permisos");
 		add(perMenu);
 		
-		consultPerItem = new JMenuItem("Consultar Permisos");
+		consultPerItem = new MenuItem("Consultar Permisos");
 		consultPerItem.addActionListener(this);
 		perMenu.add(consultPerItem);
 		
 		/*Menu Asiste*/
-		asistMenu = new JMenu("Gestion Asistencias");
+		asistMenu = new Menu("Gestion Asistencias");
 		add(asistMenu);
 		
-		consultAsistItem = new JMenuItem("Consultar Asistencias");
+		consultAsistItem = new MenuItem("Consultar Asistencias");
 		consultAsistItem.addActionListener(this);
 		asistMenu.add(consultAsistItem);
 	}

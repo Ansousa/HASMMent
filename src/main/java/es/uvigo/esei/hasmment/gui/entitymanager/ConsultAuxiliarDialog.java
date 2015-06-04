@@ -5,15 +5,19 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableColumn;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
@@ -32,7 +36,7 @@ public class ConsultAuxiliarDialog extends ConsultDialog implements ActionListen
 	
 	public ConsultAuxiliarDialog(MainFrame owner, MainContent mc) {
 		super(owner, mc);
-		indexTableSelected = 0;
+		indexTableSelected = -1;
 		this.entities = HibernateMethods.getListEntities(HibernateEntities.AUXILIAR);
 		setAuxiliarDialog();
 	}
@@ -49,6 +53,33 @@ public class ConsultAuxiliarDialog extends ConsultDialog implements ActionListen
 	
 	@Override
 	protected void createCheckBoxes() {
+		JPanel root = new JPanel(new BorderLayout());
+		JPanel searchPanel = new JPanel(new FlowLayout());
+		
+		buscarL = new JLabel("Buscar");
+		buscarTF = new JTextField("", 20);
+		
+		buscarTF.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				entities = HibernateMethods.searchInAuxiliar(buscarTF.getText());
+				tm.updateRows(createRows());
+				tm.fireTableDataChanged();
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {		
+			}
+		});
+		
+		searchPanel.add(buscarL);
+		searchPanel.add(buscarTF);
+		
 		horasCB = new JCheckBox("Horas");
 		fechaInicioContratoCB = new JCheckBox("Fecha Inicio Contrato");
 		fechaFinContratoCB = new JCheckBox("Fecha Fin Contrato");
@@ -66,7 +97,9 @@ public class ConsultAuxiliarDialog extends ConsultDialog implements ActionListen
 		checkPanel.add(fechaInicioContratoCB);
 		checkPanel.add(fechaFinContratoCB);
 		
-		add(checkPanel,BorderLayout.NORTH);
+		root.add(searchPanel,BorderLayout.NORTH);
+		root.add(checkPanel,BorderLayout.SOUTH);
+		add(root,BorderLayout.NORTH);
 	}
 	
 	private Vector<Vector> createRows() {
@@ -146,13 +179,13 @@ public class ConsultAuxiliarDialog extends ConsultDialog implements ActionListen
 		if(e.getSource() == createButton) {
 			new CreateAuxiliarDialog(this, this.mc);
 		}
-		if(e.getSource() == modifyButton) {
+		if(e.getSource() == modifyButton && indexTableSelected >= 0) {
 			new CreateAuxiliarDialog(this, this.mc, (Auxiliar)entities.get(indexTableSelected));
 		}
-		if(e.getSource() == deleteButton) {
+		if(e.getSource() == deleteButton && indexTableSelected >= 0) {
 			Auxiliar au = (Auxiliar)entities.get(indexTableSelected);
 			String me = (String)tm.getValueAt(indexTableSelected, 0);
-			new DeleteConfirm(this, au, me);
+			new DeleteConfirm(this, au, mc, me);
 		}
 		if(e.getSource() == horasCB || e.getSource() == fechaInicioContratoCB || e.getSource() == fechaFinContratoCB ) {
 			updateColums();

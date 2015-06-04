@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.joda.time.DateTime;
 
+import es.uvigo.esei.hasmment.entities.Asiste;
 import es.uvigo.esei.hasmment.entities.Auxiliar;
 import es.uvigo.esei.hasmment.entities.DBEntity;
+import es.uvigo.esei.hasmment.entities.Permiso;
 import es.uvigo.esei.hasmment.entities.Usuario;
 
 @SuppressWarnings("unchecked")
@@ -89,5 +92,138 @@ public abstract class HibernateMethods {
 		default:
 			return false;
 		}
+	}
+	
+	public static ArrayList<DBEntity> searchInUsuario(String pattern){
+		ArrayList<DBEntity> toRet = new ArrayList<DBEntity>();
+		ArrayList<DBEntity> list = getListEntities(HibernateEntities.USUARIO);
+		Boolean isIn;
+		for (DBEntity dbEntity : list) {
+			Usuario u = (Usuario) dbEntity;
+			isIn = true;
+			if(!u.getDni().toLowerCase().contains(pattern.toLowerCase())) {
+				if(!u.getNombre().toLowerCase().contains(pattern.toLowerCase())){
+					if(!u.getApellido1().toLowerCase().contains(pattern.toLowerCase())){
+						if(!u.getApellido2().toLowerCase().contains(pattern.toLowerCase())) {
+							if(!u.getDireccion().toLowerCase().contains(pattern.toLowerCase())) {
+								if(!(new Integer(u.getHoras()).toString().toLowerCase().contains(pattern.toLowerCase()))){
+									if(!u.getModalidad().toLowerCase().contains(pattern.toLowerCase())){
+										isIn = false;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			if(isIn)
+				toRet.add(dbEntity);	
+		}
+		
+		return toRet;
+	}
+	
+	public static ArrayList<DBEntity> searchInAuxiliar(String pattern){
+		ArrayList<DBEntity> toRet = new ArrayList<DBEntity>();
+		ArrayList<DBEntity> list = getListEntities(HibernateEntities.AUXILIAR);
+		Boolean isIn;
+		for (DBEntity dbEntity : list) {
+			Auxiliar a = (Auxiliar) dbEntity;
+			isIn = true;
+			if(!a.getDni().toLowerCase().contains(pattern.toLowerCase())) {
+				if(!a.getNombre().toLowerCase().contains(pattern.toLowerCase())){
+					if(!a.getApellido1().toLowerCase().contains(pattern.toLowerCase())){
+						if(!a.getApellido2().toLowerCase().contains(pattern.toLowerCase())) {
+							if(!(new Integer(a.getHoras()).toString().toLowerCase().contains(pattern.toLowerCase()))){
+								if(!a.getFechaInicioContrato().toString().toLowerCase().contains(pattern.toLowerCase())){
+									if(!a.getFechaFinContrato().toString().toLowerCase().contains(pattern.toLowerCase()))
+										isIn = false;
+								}
+							}
+						}
+					}
+				}
+			}
+			if(isIn)
+				toRet.add(dbEntity);	
+		}
+		
+		return toRet;
+	}
+	
+	public static ArrayList<DBEntity> searchInPermiso(String pattern){
+		ArrayList<DBEntity> toRet = new ArrayList<DBEntity>();
+		ArrayList<DBEntity> list = getListEntities(HibernateEntities.PERMISO);
+		Boolean isIn;
+		for (DBEntity dbEntity : list) {
+			Permiso p = (Permiso) dbEntity;
+			isIn = true;
+			if(!p.getDni().toLowerCase().contains(pattern.toLowerCase())) {
+				if(!p.getFechaInicioPermiso().toString().toLowerCase().contains(pattern.toLowerCase())){
+					if(!p.getFechaFinPermiso().toString().toLowerCase().contains(pattern.toLowerCase())){
+						if(!p.getTipo().toLowerCase().contains(pattern.toLowerCase())) {
+							isIn = false;
+						}
+					}
+				}
+			}
+			if(isIn)
+				toRet.add(dbEntity);	
+		}
+		
+		return toRet;
+	}
+	
+	public static ArrayList<DBEntity> searchInAsiste(String pattern){
+		ArrayList<DBEntity> toRet = new ArrayList<DBEntity>();
+		ArrayList<DBEntity> list = getListEntities(HibernateEntities.ASISTE);
+		Boolean isIn;
+		for (DBEntity dbEntity : list) {
+			Asiste a = (Asiste) dbEntity;
+			isIn = true;
+			if(!a.getDniUsuario().toLowerCase().contains(pattern.toLowerCase())) {
+				if(!a.getDniAuxiliar().toLowerCase().contains(pattern.toLowerCase())) {
+					if(!a.getFechaHoraInicioAsistencia().toString().toLowerCase().contains(pattern.toLowerCase())){
+						if(!a.getFechaHoraFinAsistencia().toString().toLowerCase().contains(pattern.toLowerCase())){
+							if(!a.getActividad().toLowerCase().contains(pattern.toLowerCase())) {
+								isIn = false;
+							}
+						}
+					}
+				}
+			}
+			if(isIn)
+				toRet.add(dbEntity);	
+		}
+		
+		return toRet;
+	}
+	
+	public static DateTime getLastDateAsist() {
+		DateTime last = new DateTime(1);
+		DateTime toCheck;
+		ArrayList<DBEntity> asists = getListEntities(HibernateEntities.ASISTE);
+		for (DBEntity dbEntity : asists) {
+			Asiste a = (Asiste) dbEntity;
+			toCheck = new DateTime(a.getFechaHoraFinAsistencia());
+			if(toCheck.isAfter(last))
+				last = toCheck;
+		}
+		
+		return last;
+	}
+	
+	public static DateTime getFirstDateAsist() {
+		DateTime last = getLastDateAsist();
+		DateTime toCheck;
+		ArrayList<DBEntity> asists = getListEntities(HibernateEntities.ASISTE);
+		for (DBEntity dbEntity : asists) {
+			Asiste a = (Asiste) dbEntity;
+			toCheck = new DateTime(a.getFechaHoraInicioAsistencia());
+			if(toCheck.isBefore(last))
+				last = toCheck;
+		}
+		
+		return last;
 	}
 }

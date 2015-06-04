@@ -48,6 +48,7 @@ public class CreatePermisoDialog extends JDialog implements ActionListener{
 	
 	Permiso perModify;
 	Boolean modify;
+	JTextField auxiliarTF,fechaInicioTF;
 	
 	JButton createButton, clearButton;
 	String[] tipo = {"-", "Vacaciones", "Baja", "Asuntos propios"};
@@ -72,17 +73,23 @@ public class CreatePermisoDialog extends JDialog implements ActionListener{
 	
 	private void setToModify() {
 		Auxiliar a = HibernateMethods.getAuxiliar(perModify.getDni());
-		auxiliarCB.setSelectedItem(a.getDni() + ", " + a.getNombre());
+		auxiliarTF.setText(a.getDni() + ", " + a.getNombre());
 		
-		dateModelInicio.setValue(perModify.getFechaInicioPermiso());
+		fechaInicioTF.setText(perModify.getFechaInicioPermiso().toString());
+		
 		dateModelFin.setValue(perModify.getFechaFinPermiso());
 		
 		tipoPermisoCB.setSelectedItem(perModify.getTipo());
+		
+		createButton.setText("Modificar");
 	}
 	
 	private void initCreateDialog() {
 		auxs = HibernateMethods.getListEntities(HibernateEntities.AUXILIAR);
-		setTitle("Crear Auxiliar");
+		if(modify)
+			setTitle("Modificar Auxiliar");
+		else
+			setTitle("Crear Auxiliar");
 		add(createForm());
 		setLocationRelativeTo(this.getOwner());
 		setVisible(true);
@@ -128,14 +135,24 @@ public class CreatePermisoDialog extends JDialog implements ActionListener{
 		form.setLayout(new GridLayout(5,2,10,10));
 		
 		form.add(auxiliarL);
-		form.add(auxiliarCB);
+		if(modify){
+			auxiliarTF = new JTextField("");
+			auxiliarTF.setEditable(false);
+			form.add(auxiliarTF);
+		}
+		else
+			form.add(auxiliarCB);
 		
 		form.add(fechaInicioPermisoL);
-		//Modificar posteriormente
-		form.add(datePickerfInicio);
+		if(modify){
+			fechaInicioTF = new JTextField("");
+			fechaInicioTF.setEditable(false);
+			form.add(fechaInicioTF);
+		}
+		else
+			form.add(datePickerfInicio);
 		
 		form.add(fechaFinPermisoL);
-		//Modificar posteriormente
 		form.add(datePickerfFin);
 		
 		form.add(tipoPermisoL);
@@ -173,6 +190,7 @@ public class CreatePermisoDialog extends JDialog implements ActionListener{
 			else
 				HibernateMethods.modifyEntity(p);
 			this.owner.updateTable();
+			this.mc.updateMainContent();
 		}
 	}
 	
@@ -205,9 +223,9 @@ public class CreatePermisoDialog extends JDialog implements ActionListener{
 		}
 		if(e.getSource() == clearButton ) {
 			if(!modify)
-				clearAction();
-			else
 				setToModify();
+			else
+				clearAction();
 		}
 	}
 }

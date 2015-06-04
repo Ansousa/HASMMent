@@ -45,7 +45,7 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		super(owner);
 		this.mc = mc;
 		this.owner = owner;
-		modify = false;
+		this.modify = false;
 		initCreateDialog();
 	}
 	
@@ -54,8 +54,8 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		this.mc = mc;
 		this.owner = owner;
 		this.userModifiy = u;
-		initCreateDialog();
 		modify = true;
+		initCreateDialog();
 		setToModify();
 	}
 	
@@ -68,11 +68,16 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		direccionTA.setText(userModifiy.getDireccion());
 		horasTF.setText(new Integer(userModifiy.getHoras()).toString());
 		modalidadCB.setSelectedItem(userModifiy.getModalidad());
+		
+		createButton.setText("Modificar");
 	}
 	
 	private void initCreateDialog() {
 		setLocationRelativeTo(this.getOwner());
-		setTitle("Crear Usuario");
+		if(modify)
+			setTitle("Modificar Usuario");
+		else
+			setTitle("Crear Usuario");
 		//setModal(true);
 		add(createForm());
 		setVisible(true);
@@ -164,6 +169,7 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 		else
 			HibernateMethods.modifyEntity(u);
 		this.owner.updateTable();
+		this.mc.updateMainContent();
 	}
 	
 	private void checkUsuarioForm() throws Exception{
@@ -217,10 +223,10 @@ public class CreateUsuarioDialog extends JDialog implements ActionListener{
 			}
 		}
 		else if(e.getSource() == clearButton) {
-			if(!modify)
-				clearAction();
-			else
+			if(modify)
 				setToModify();
+			else
+				clearAction();				
 		}
 	}
 }

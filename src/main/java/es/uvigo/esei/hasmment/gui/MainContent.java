@@ -1,66 +1,102 @@
 package es.uvigo.esei.hasmment.gui;
 
-import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.util.HashMap;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
-import java.util.*;
+import org.joda.time.DateTime;
 
-import es.uvigo.esei.hasmment.dao.HibernateEntities;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
-import es.uvigo.esei.hasmment.entities.*;
+import es.uvigo.esei.hasmment.gui.overallview.SelectMonthPanel;
+import es.uvigo.esei.hasmment.gui.overallview.ShowAuxsOverall;
+import es.uvigo.esei.hasmment.gui.overallview.ShowUsersOverall;
 
 @SuppressWarnings("serial")
 public class MainContent extends JPanel{
 	MainFrame owner;
+	HashMap<Integer, String> nombreMeses;
+	
 	public MainContent(MainFrame owner) {
 		this.owner = owner;
+		initNombreMeses();
 		initMainContent();
 	}
 	
 	private void initMainContent() {
-		/*Usuarios*/
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		List<DBEntity> users = HibernateMethods.getListEntities(HibernateEntities.USUARIO);
-		add(new JLabel("USUARIOS"));
-		Usuario u;
-		for(int i=0;i<users.size();i++)
-		{
-			u = (Usuario)users.get(i);
-			add(new JLabel(u.getDni() +  "," + u.getNombre()));
-		}
-		add(new JLabel("----------"));
+		setBackground(new Color(18, 42, 101));
+		setBorder(new EmptyBorder(50, 50, 50, 50));
+		setLayout(new BorderLayout(5, 50));
+		DateTime lastMonth = new DateTime(HibernateMethods.getLastDateAsist().getYear(), HibernateMethods.getLastDateAsist().getMonthOfYear(), 1, 0, 0);
 		
-		/*Auxiliares*/
-		users = HibernateMethods.getListEntities(HibernateEntities.AUXILIAR);
-		add(new JLabel("AUXILIARES"));
-		Auxiliar a;
-		for(int i=0;i<users.size();i++)
-		{
-			a = (Auxiliar)users.get(i);
-			add(new JLabel(a.getDni() +  "," + a.getNombre()));
-		}
-		add(new JLabel("----------"));
+		JPanel head = new JPanel(new BorderLayout());
+		JPanel show = new JPanel(new FlowLayout());
+		JLabel showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(lastMonth.getMonthOfYear()));
+		showMonth.setFont(new Font("Arial", 1, 40));
+		show.add(showMonth);
+		head.add(show, BorderLayout.NORTH);
+		head.add(new ShowUsersOverall(lastMonth),BorderLayout.SOUTH);
+		add(head,BorderLayout.NORTH);
 		
-		/*Permisos*/
-		users = HibernateMethods.getListEntities(HibernateEntities.PERMISO);
-		add(new JLabel("PERMISOS"));
-		Permiso p;
-		for(int i=0;i<users.size();i++)
-		{
-			p = (Permiso)users.get(i);
-			add(new JLabel(p.getDni() +  "," + p.getTipo()));
-		}
-		add(new JLabel("----------"));
+		add(new ShowAuxsOverall(lastMonth),BorderLayout.CENTER);
+		add(new SelectMonthPanel(this),BorderLayout.SOUTH);
+	}
+	
+	public void updateMainContent() {
+		this.removeAll();
+		DateTime lastMonth = new DateTime(HibernateMethods.getLastDateAsist().getYear(), HibernateMethods.getLastDateAsist().getMonthOfYear(), 1, 0, 0);
 		
-		/*Asistencias*/
-		users = HibernateMethods.getListEntities(HibernateEntities.ASISTE);
-		add(new JLabel("ASISTENCIAS"));
-		Asiste as;
-		for(int i=0;i<users.size();i++)
-		{
-			as = (Asiste)users.get(i);
-			add(new JLabel("Usuario: " + as.getDniUsuario() +  ", Auxiliar: " + as.getDniAuxiliar()));
-		}
+		JPanel head = new JPanel(new BorderLayout());
+		JPanel show = new JPanel(new FlowLayout());
+		JLabel showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(lastMonth.getMonthOfYear()));
+		showMonth.setFont(new Font("Arial", 1, 40));
+		show.add(showMonth);
+		head.add(show, BorderLayout.NORTH);
+		head.add(new ShowUsersOverall(lastMonth),BorderLayout.SOUTH);
+		add(head,BorderLayout.NORTH);
+		
+		this.add(new ShowAuxsOverall(lastMonth),BorderLayout.CENTER);
+		this.add(new SelectMonthPanel(this),BorderLayout.SOUTH);
+		this.validate();
+		this.repaint();
+	}
+	
+	public void updateMainContent(DateTime month) {
+		this.removeAll();
+		
+		JPanel head = new JPanel(new BorderLayout());
+		JPanel show = new JPanel(new FlowLayout());
+		JLabel showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(month.getMonthOfYear()));
+		showMonth.setFont(new Font("Arial", 1, 40));
+		show.add(showMonth);
+		head.add(show, BorderLayout.NORTH);
+		head.add(new ShowUsersOverall(month),BorderLayout.SOUTH);
+		add(head,BorderLayout.NORTH);
+		
+		this.add(new ShowAuxsOverall(month),BorderLayout.CENTER);
+		this.add(new SelectMonthPanel(this),BorderLayout.SOUTH);
+		this.validate();
+		this.repaint();
+	}
+	
+	private void initNombreMeses() {
+		nombreMeses = new HashMap<Integer, String>();
+		nombreMeses.put(1, "Enero");
+		nombreMeses.put(2, "Febrero");
+		nombreMeses.put(3, "Marzo");
+		nombreMeses.put(4, "Abril");
+		nombreMeses.put(5, "Mayo");
+		nombreMeses.put(6, "Junio");
+		nombreMeses.put(7, "Julio");
+		nombreMeses.put(8, "Agosto");
+		nombreMeses.put(9, "Septiembre");
+		nombreMeses.put(10, "Octubre");
+		nombreMeses.put(11, "Noviembre");
+		nombreMeses.put(12, "Diciembre");
 	}
 }
