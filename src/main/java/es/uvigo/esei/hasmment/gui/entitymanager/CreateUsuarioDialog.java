@@ -1,8 +1,5 @@
 package es.uvigo.esei.hasmment.gui.entitymanager;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +10,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -22,8 +18,8 @@ import org.hibernate.exception.ConstraintViolationException;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.Usuario;
 import es.uvigo.esei.hasmment.gui.MainContent;
-import es.uvigo.esei.hasmment.gui.MainFrame;
 
+@SuppressWarnings("serial")
 public class CreateUsuarioDialog extends JDialog implements ActionListener{	
 	JLabel dniL,nombreL,apellido1L,apellido2L,direccionL,horasL,modalidadL;
 	JTextField dniTF,nombreTF,apellido1TF,apellido2TF,horasTF;

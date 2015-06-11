@@ -27,6 +27,7 @@ import es.uvigo.esei.hasmment.gui.MainContent;
 public class SelectMonthPanel extends JPanel{
 	MainContent mc;
 	JComboBox<String> months = new JComboBox<String>();
+	JComboBox<String> days = new JComboBox<String>();
 	LinkedHashSet<String> monthsString;
 	ArrayList<DateTime> monthsDateTime;
 	ArrayList<DBEntity> asists = HibernateMethods.getListEntities(HibernateEntities.ASISTE);	
@@ -72,16 +73,28 @@ public class SelectMonthPanel extends JPanel{
 				monthsDateTime.add(month);
 			}
 		}
+		days.addItem("Todo el mes");
+		for(int i=1;i<=31;i++){
+			days.addItem(new Integer(i).toString());
+		}
 		
 		add(message);
+		add(days);
 		add(months);
 		JButton send = new JButton("Mostrar");
 		send.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DateTime month = monthsDateTime.get(months.getSelectedIndex());
-				mc.updateMainContent(month);
+				if(days.getSelectedIndex() == 0) {
+					DateTime month = monthsDateTime.get(months.getSelectedIndex());
+					mc.updateMainContent(month,false);
+				}
+				else{
+					DateTime month = monthsDateTime.get(months.getSelectedIndex());
+					month = month.plusDays(Integer.parseInt((String)days.getSelectedItem())-1);
+					mc.updateMainContent(month,true);
+				}
 			}
 		});
 		add(send);

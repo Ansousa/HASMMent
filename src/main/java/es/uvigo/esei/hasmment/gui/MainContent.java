@@ -11,8 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.joda.time.DateTime;
-
-import com.mysql.jdbc.util.TimezoneDump;
+import org.joda.time.MutableDateTime;
 
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.gui.overallview.SelectMonthPanel;
@@ -38,16 +37,20 @@ public class MainContent extends JPanel{
 		JLabel showMonth = new JLabel();
 		JPanel head = new JPanel(new BorderLayout());
 		JPanel show = new JPanel(new FlowLayout());
-		if(lastMonth.equals(new DateTime(1)))
-			showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(lastMonth.getMonthOfYear()));
+		if(lastMonth.getMillis() == -3600000){
+			showMonth = new JLabel("Sin asistencias");
+		}
+		else
+			showMonth = new JLabel(nombreMeses.get(lastMonth.getMonthOfYear()) + " "  + lastMonth.getYear());
 		showMonth.setFont(new Font("Arial", 1, 40));
 		show.add(showMonth);
 		head.add(show, BorderLayout.NORTH);
 		head.add(new ShowUsersOverall(lastMonth),BorderLayout.SOUTH);
 		add(head,BorderLayout.NORTH);
 		
-		add(new ShowAuxsOverall(lastMonth),BorderLayout.CENTER);
+		add(new ShowAuxsOverall(lastMonth,false),BorderLayout.CENTER);
 		add(new SelectMonthPanel(this),BorderLayout.SOUTH);
+		this.owner.pack();
 	}
 	
 	public void updateMainContent() {
@@ -56,35 +59,50 @@ public class MainContent extends JPanel{
 		JLabel showMonth = new JLabel();
 		JPanel head = new JPanel(new BorderLayout());
 		JPanel show = new JPanel(new FlowLayout());
-		if(lastMonth.equals(new DateTime(1)))
-			showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(lastMonth.getMonthOfYear()));
+		if(lastMonth.getMillis() == -3600000){
+			showMonth = new JLabel("Sin asistencias");
+		}
+		else
+			showMonth = new JLabel(nombreMeses.get(lastMonth.getMonthOfYear()) + " "  + lastMonth.getYear());
 		showMonth.setFont(new Font("Arial", 1, 40));
 		show.add(showMonth);
 		head.add(show, BorderLayout.NORTH);
 		head.add(new ShowUsersOverall(lastMonth),BorderLayout.SOUTH);
 		add(head,BorderLayout.NORTH);
 		
-		this.add(new ShowAuxsOverall(lastMonth),BorderLayout.CENTER);
+		this.add(new ShowAuxsOverall(lastMonth,false),BorderLayout.CENTER);
 		this.add(new SelectMonthPanel(this),BorderLayout.SOUTH);
 		this.validate();
 		this.repaint();
+		this.owner.pack();
 	}
 	
-	public void updateMainContent(DateTime month) {
+	public void updateMainContent(DateTime month, boolean selectedDay) {
 		this.removeAll();
 		JPanel head = new JPanel(new BorderLayout());
 		JPanel show = new JPanel(new FlowLayout());
-		JLabel showMonth = new JLabel("Mes a mostrar: " + nombreMeses.get(month.getMonthOfYear()));
+		JLabel showMonth;
+		if(!selectedDay)
+			showMonth = new JLabel(nombreMeses.get(month.getMonthOfYear()) + " "  + month.getYear());
+		else
+			showMonth = new JLabel(month.getDayOfMonth() + " de " + nombreMeses.get(month.getMonthOfYear()) + " de "  + month.getYear());
 		showMonth.setFont(new Font("Arial", 1, 40));
 		show.add(showMonth);
 		head.add(show, BorderLayout.NORTH);
-		head.add(new ShowUsersOverall(month),BorderLayout.SOUTH);
+		if(!selectedDay)
+			head.add(new ShowUsersOverall(month),BorderLayout.SOUTH);
+		else{
+			MutableDateTime mdt = new MutableDateTime(month);
+			mdt.setDayOfMonth(1);
+			head.add(new ShowUsersOverall(new DateTime(mdt)),BorderLayout.SOUTH);
+		}
 		add(head,BorderLayout.NORTH);
 		
-		this.add(new ShowAuxsOverall(month),BorderLayout.CENTER);
+		this.add(new ShowAuxsOverall(month,selectedDay),BorderLayout.CENTER);
 		this.add(new SelectMonthPanel(this),BorderLayout.SOUTH);
 		this.validate();
 		this.repaint();
+		this.owner.pack();
 	}
 	
 	private void initNombreMeses() {

@@ -1,27 +1,16 @@
 package es.uvigo.esei.hasmment.gui.entitymanager;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.util.Calendar;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -30,10 +19,9 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.Auxiliar;
-import es.uvigo.esei.hasmment.entities.Usuario;
 import es.uvigo.esei.hasmment.gui.MainContent;
-import es.uvigo.esei.hasmment.gui.MainFrame;
 
+@SuppressWarnings("serial")
 public class CreateAuxiliarDialog extends JDialog implements ActionListener{	
 	JLabel dniL,nombreL,apellido1L,apellido2L,horasL,fInicioCL,fFinCL;
 	JTextField dniTF,nombreTF,apellido1TF,apellido2TF,horasTF;
@@ -233,7 +221,7 @@ public class CreateAuxiliarDialog extends JDialog implements ActionListener{
 			}
 		}
 		else if(e.getSource() == clearButton) {
-			if(!modify)
+			if(modify)
 				setToModify();
 			else
 				clearAction();

@@ -3,7 +3,6 @@ package es.uvigo.esei.hasmment.gui.entitymanager;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,6 +25,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.joda.time.DateTime;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
@@ -35,6 +35,7 @@ import es.uvigo.esei.hasmment.entities.DBEntity;
 import es.uvigo.esei.hasmment.entities.Usuario;
 import es.uvigo.esei.hasmment.gui.MainContent;
 
+@SuppressWarnings("serial")
 public class CreateAsisteDialog extends JDialog implements ActionListener{
 	ConsultDialog owner;
 	MainContent mc;
@@ -222,6 +223,38 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 		String dniUsuario = usuarioCB.getSelectedItem().toString().split(",")[0].trim();
 		String dniAuxiliar = auxiliarCB.getSelectedItem().toString().split(",")[0].trim();
 		
+		/*Comprobamos que la asistencia creada no empieza / acaba dentro de otra asistencia
+		 * 
+		 */
+		
+		boolean errorIsIn = false;
+		ArrayList<DBEntity> asists = HibernateMethods.getListEntities(HibernateEntities.ASISTE);
+		for (DBEntity dbEntity : asists) {
+			Asiste as = (Asiste) dbEntity;//Pasamos a formate DateTime para comparar
+			if(as.getDniUsuario().equals(dniUsuario) && as.getDniAuxiliar().equals(dniAuxiliar)){ //Comprobamos si corresponde al mismo usuario y auxiliar
+				DateTime dbI = new DateTime(as.getFechaHoraInicioAsistencia()); //Entidad a comparar (db)
+				DateTime dbF = new DateTime(as.getFechaHoraFinAsistencia());
+				DateTime i = new DateTime(timeStampInicio);//Entidad a introducir
+				DateTime f = new DateTime(timeStampFin);
+				if(dbI.minus(dbI.getMinuteOfDay()*60*1000).isEqual(dbI.minus(dbI.getMinuteOfDay()*60*1000))){//miramos si la fecha de inicio coincide
+					if((dbI.getMinuteOfDay() <= i.getMinuteOfDay()) && (i.getMinuteOfDay() <= dbF.getMinuteOfDay())){//comprobamos si el minuto del dia esta en el ragno de la asistencia
+						errorIsIn = true;
+						break;
+					}
+				}
+				else if((dbI.minus(dbI.getMinuteOfDay()*60*1000)==(f.minus(f.getMinuteOfDay()*60*1000)))){//miramos si la fecha de fin coincide
+					if((dbI.getMinuteOfDay() <= f.getMinuteOfDay()) && (f.getMinuteOfDay()) <= dbF.getMinuteOfDay()){
+						errorIsIn = true;
+						break;						
+					}
+				}
+			}
+		}
+		
+		/*
+		 * 
+		 */
+		
 		Asiste a = new Asiste(
 					dniUsuario, 
 					dniAuxiliar, 
@@ -232,13 +265,35 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 		if(timeStampInicio.after(timeStampFin)){
 			throw new Exception("No puede indicarse que se EMPIEZA la ASISTENCIA despues de que ACABE");
 		}
+		else if(errorIsIn){
+			throw new Exception("Hay un error en la asistencia, solapa asistencia existente");
+		}
 		else if(actividadTF.getText().trim().isEmpty()){
 			throw new Exception("El campo ACTIVIDAD no puede estar VACIO");
 		}
 		else{
 			if(!modify){
-				System.out.println(a.toString());
-				HibernateMethods.saveEntity(a);
+				DateTime d1 = new DateTime(a.getFechaHoraInicioAsistencia());
+				DateTime d2 = new DateTime(a.getFechaHoraFinAsistencia());
+				
+				DateTime dayStart = d1;//Dia para empezar
+				DateTime hFin; //Hora para acabar
+				long hourFinInMilis = d2.getMinuteOfDay()*60*1000;
+				Asiste x;
+				
+				//Calcuar los dias
+				d1 = d1.minus(d1.getMinuteOfDay()*60*1000);
+				d2 = d2.minus(d2.getMinuteOfDay()*60*1000);
+				int days = (int)(d2.minus(d1.getMillis()).getMillis()/(24*60*60*1000)+1);
+				for(int i=0;i<days;i++) {
+					x = a;
+					x.setFechaHoraInicioAsistencia(new Timestamp(dayStart.getMillis()));//Poner la hora de inicio de asistencia
+					hFin = dayStart.minus(dayStart.getMinuteOfDay()*60*1000); //Reiniciar la hora del dia
+					hFin = hFin.plus(hourFinInMilis);
+					x.setFechaHoraFinAsistencia(new Timestamp(hFin.getMillis()));//Poner la hora de fin de asistencia
+					HibernateMethods.saveEntity(x);
+					dayStart = dayStart.plusDays(1);//Sumamos un dia
+				}
 			}
 			else
 				HibernateMethods.modifyEntity(a);
@@ -279,7 +334,7 @@ public class CreateAsisteDialog extends JDialog implements ActionListener{
 			}
 		}
 		if(e.getSource() == clearButton ) {
-			if(!modify)
+			if(modify)
 				setToModify();
 			else
 				clearAction();

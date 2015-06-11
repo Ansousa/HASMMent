@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,6 +26,7 @@ import es.uvigo.esei.hasmment.entities.DBEntity;
 import es.uvigo.esei.hasmment.gui.MainContent;
 import es.uvigo.esei.hasmment.gui.MainFrame;
 
+@SuppressWarnings("serial")
 public class ConsultAuxiliarDialog extends ConsultDialog implements ActionListener{
 	private JCheckBox horasCB, fechaInicioContratoCB, fechaFinContratoCB;
 	
@@ -102,6 +102,7 @@ public class ConsultAuxiliarDialog extends ConsultDialog implements ActionListen
 		add(root,BorderLayout.NORTH);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private Vector<Vector> createRows() {
 		Vector<Vector> data = new Vector<Vector>();
 		for(DBEntity e:entities){

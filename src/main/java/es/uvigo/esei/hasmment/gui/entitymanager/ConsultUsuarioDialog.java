@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -103,6 +102,7 @@ public class ConsultUsuarioDialog extends ConsultDialog implements ActionListene
 		add(root,BorderLayout.NORTH);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private Vector<Vector> createRows() {
 		Vector<Vector> data = new Vector<Vector>();
 		for(DBEntity e:entities){

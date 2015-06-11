@@ -9,29 +9,25 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
 import es.uvigo.esei.hasmment.entities.Auxiliar;
 import es.uvigo.esei.hasmment.entities.DBEntity;
 import es.uvigo.esei.hasmment.entities.Permiso;
-import es.uvigo.esei.hasmment.entities.Usuario;
 import es.uvigo.esei.hasmment.gui.MainContent;
 import es.uvigo.esei.hasmment.gui.MainFrame;
 
+@SuppressWarnings("serial")
 public class ConsultPermisoDialog extends ConsultDialog implements ActionListener{
 	private JCheckBox fechaFinPermisoCB,tipoPermisoCB;
 	
@@ -103,6 +99,7 @@ public class ConsultPermisoDialog extends ConsultDialog implements ActionListene
 		add(root,BorderLayout.NORTH);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private Vector<Vector> createRows() {
 		Vector<Vector> data = new Vector<Vector>();
 		for(DBEntity e:entities){

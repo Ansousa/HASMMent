@@ -3,9 +3,7 @@ package es.uvigo.esei.hasmment.gui.entitymanager;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -15,16 +13,12 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import es.uvigo.esei.hasmment.dao.HibernateEntities;
 import es.uvigo.esei.hasmment.dao.HibernateMethods;
@@ -33,6 +27,7 @@ import es.uvigo.esei.hasmment.entities.DBEntity;
 import es.uvigo.esei.hasmment.entities.Permiso;
 import es.uvigo.esei.hasmment.gui.MainContent;
 
+@SuppressWarnings("serial")
 public class CreatePermisoDialog extends JDialog implements ActionListener{
 	ConsultDialog owner;
 	MainContent mc;
@@ -222,7 +217,7 @@ public class CreatePermisoDialog extends JDialog implements ActionListener{
 			}
 		}
 		if(e.getSource() == clearButton ) {
-			if(!modify)
+			if(modify)
 				setToModify();
 			else
 				clearAction();

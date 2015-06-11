@@ -18,7 +18,6 @@ public class MainFrame extends JFrame{
 		//Inicializando los parametros
 		setTitle("HASMment");
 		setDefaultCloseOperation(closeWindow());
-		setMinimumSize(new Dimension(0, 300));
 		
 		//Añadiendo las partes
 		MainContent mC = new MainContent(this);
