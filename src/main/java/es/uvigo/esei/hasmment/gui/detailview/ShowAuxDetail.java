@@ -2,7 +2,6 @@ package es.uvigo.esei.hasmment.gui.detailview;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -27,17 +26,13 @@ import es.uvigo.esei.hasmment.entities.DBEntity;
 @SuppressWarnings("serial")
 public class ShowAuxDetail extends JFrame{
 	private Auxiliar aux;
-	private DateTime month;
 	private ArrayList<DBEntity> asists;
-	private boolean oneDay;
 	private DateTime inicio, fin;
 	private Interval interval;
 	
 	public ShowAuxDetail(Auxiliar a, DateTime month, boolean oneDay) {
 		this.aux = a;
-		this.month = month;
 		this.asists = HibernateMethods.getListEntities(HibernateEntities.ASISTE);
-		this.oneDay = oneDay;
 		if(!oneDay) {
 			inicio = month;
 			fin = month.plusMonths(1);

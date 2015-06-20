@@ -12,13 +12,15 @@ import es.uvigo.esei.hasmment.gui.entitymanager.ConsultAsisteDialog;
 import es.uvigo.esei.hasmment.gui.entitymanager.ConsultAuxiliarDialog;
 import es.uvigo.esei.hasmment.gui.entitymanager.ConsultPermisoDialog;
 import es.uvigo.esei.hasmment.gui.entitymanager.ConsultUsuarioDialog;
+import es.uvigo.esei.hasmment.gui.print.PrintAuxDialog;
+import es.uvigo.esei.hasmment.gui.print.PrintUserDialog;
 
 public class MenuBar extends JMenuBar implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private MainFrame owner;
 	private MainContent mc;
-	private Menu userMenu,auxMenu,perMenu,asistMenu;
-	private MenuItem consultUserItem,consultAuxItem,consultPerItem,consultAsistItem;
+	private Menu userMenu,auxMenu,perMenu,asistMenu,printMenu;
+	private MenuItem consultUserItem,consultAuxItem,consultPerItem,consultAsistItem, printUserItem, printAuxItem;
 	
 	@SuppressWarnings("serial")
 	private class Menu extends JMenu{
@@ -77,6 +79,17 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		consultAsistItem = new MenuItem("Consultar Asistencias");
 		consultAsistItem.addActionListener(this);
 		asistMenu.add(consultAsistItem);
+		
+		/*Menu Imprimir*/
+		printMenu = new Menu("Generar horarios");
+		add(printMenu);
+		
+		printUserItem = new MenuItem("Imprimir Horario Usuario");
+		printAuxItem = new MenuItem("Imprimir Horario Auxiliar");
+		printUserItem.addActionListener(this);
+		printAuxItem.addActionListener(this);
+		printMenu.add(printUserItem);
+		printMenu.add(printAuxItem);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -91,6 +104,12 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		}
 		else if(e.getSource() == consultAsistItem){
 			new ConsultAsisteDialog(this.owner, this.mc);
+		}
+		else if(e.getSource() == printUserItem) {
+			new PrintUserDialog(this.owner);
+		}
+		else if(e.getSource() == printAuxItem) {
+			new PrintAuxDialog(this.owner);
 		}
 	}
 }
