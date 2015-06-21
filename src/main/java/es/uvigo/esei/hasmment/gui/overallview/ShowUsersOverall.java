@@ -69,14 +69,14 @@ public class ShowUsersOverall extends JPanel{
 			//Si no tiene las horas cubiertas
 			if(h<u.getHoras()) {
 				if(h==0) { //El usuario no tiene ninguna asistencia asignada NEGRO
-					userStatus.setIcon(new ImageIcon(getClass().getResource("userBlack.png")));
+					userStatus.setIcon(new ImageIcon(getClass().getResource("/img/userBlack.png")));
 					userStatus.setToolTipText(u.getDni() + ". El usuario no tiene ninguna hora asignada (" + h + "/" + u.getHoras() + ")");
 					userPanel.add(userStatus,BorderLayout.CENTER);
 					userPanel.add(userName,BorderLayout.SOUTH);
 					listUsers.add(userPanel);
 				}
 				else { //El usuario tiene horas pero no las suficientes NARANJA
-					userStatus.setIcon(new ImageIcon(getClass().getResource("userOrange.png")));
+					userStatus.setIcon(new ImageIcon(getClass().getResource("/img/userOrange.png")));
 					userStatus.setToolTipText(u.getDni() + ". El usuario no tiene cubiertas las horas (" + h + "/" + u.getHoras() + ")");
 					userPanel.add(userStatus,BorderLayout.CENTER);
 					userPanel.add(userName,BorderLayout.SOUTH);
@@ -86,14 +86,14 @@ public class ShowUsersOverall extends JPanel{
 			//Si tiene las horas necesarias
 			else{
 				if(h>u.getHoras()) { //El usuario tiene demasiadas horas ROJO
-					userStatus.setIcon(new ImageIcon(getClass().getResource("userRed.png")));
+					userStatus.setIcon(new ImageIcon(getClass().getResource("/img/userRed.png")));
 					userStatus.setToolTipText(u.getDni() + ". El usuario se pasa en " + h + " horas (" + h + "/" + u.getHoras() + ")");
 					userPanel.add(userStatus,BorderLayout.CENTER);
 					userPanel.add(userName,BorderLayout.SOUTH);
 					listUsers.add(userPanel);
 				}
 				else { //El usuario tiene las horas necesarias VERDE
-					userStatus.setIcon(new ImageIcon(getClass().getResource("userGreen.png")));
+					userStatus.setIcon(new ImageIcon(getClass().getResource("/img/userGreen.png")));
 					userStatus.setToolTipText(u.getDni() + ". El usuario tiene cubiertas las horas (" + h + "/" + u.getHoras() + ")");
 					userPanel.add(userStatus,BorderLayout.CENTER);
 					userPanel.add(userName,BorderLayout.SOUTH);

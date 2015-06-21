@@ -1,6 +1,8 @@
 package es.uvigo.esei.hasmment.gui.detailview;
 
 import java.awt.BorderLayout;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -29,17 +31,21 @@ public class ShowAuxDetail extends JFrame{
 	private ArrayList<DBEntity> asists;
 	private DateTime inicio, fin;
 	private Interval interval;
+	private String dayToShow;
 	
 	public ShowAuxDetail(Auxiliar a, DateTime month, boolean oneDay) {
 		this.aux = a;
 		this.asists = HibernateMethods.getListEntities(HibernateEntities.ASISTE);
 		if(!oneDay) {
 			inicio = month;
+			dayToShow =  "Día";
 			fin = month.plusMonths(1);
 			interval = new Interval(inicio,fin);
 		}
 		else{
 			inicio = month.minusMinutes(month.getMinuteOfDay());
+			DateFormat df = new SimpleDateFormat("dd/MM");
+			dayToShow = df.format(new Date(inicio.getMillis()));
 			fin = inicio.plusDays(1);
 			interval = new Interval(inicio,fin);
 		}
@@ -90,7 +96,7 @@ public class ShowAuxDetail extends JFrame{
         final JFreeChart chart = ChartFactory.createGanttChart(
             "Reparto de Asistencias",  // chart title
             "Usuario",              // domain axis label
-            "Día",              // range axis label
+            dayToShow,              // range axis label
             dataset,             // data
             false,                // include legend
             true,                // tooltips

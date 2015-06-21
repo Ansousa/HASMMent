@@ -124,7 +124,7 @@ public class ShowAuxsOverall extends JPanel{
 			}
 	        for (DBEntity dbEntity : auxs) {
 				Auxiliar a = (Auxiliar) dbEntity;
-				result.addValue(a.getHoras() - map.get(a.getDni()), a.getNombre() + " " + a.getApellido1() + " " + a.getApellido2() , "Horas de holgura");
+				result.addValue(a.getHoras() - map.get(a.getDni()), a.getNombre() + " " + a.getApellido1() + " " + a.getApellido2() , "Horas de holgura totales");
 			}
 	        
 	        return result;

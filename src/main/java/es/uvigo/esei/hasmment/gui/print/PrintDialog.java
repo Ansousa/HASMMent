@@ -1,8 +1,6 @@
 package es.uvigo.esei.hasmment.gui.print;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.ParseException;
@@ -14,10 +12,6 @@ import java.util.LinkedHashSet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.joda.time.DateTime;
 
@@ -31,13 +25,14 @@ import es.uvigo.esei.hasmment.gui.MainFrame;
 public abstract class PrintDialog extends JDialog implements ActionListener{
 	protected JComboBox<String> persona, month;
 	protected JButton exportButton,selectButton;
-	protected JFileChooser chooser;
-	protected JTextField filePath;
+	
+	protected double numeroHoras;
 	
 	protected MainFrame owner; 
 	protected LinkedHashSet<String> monthsString;
 	protected ArrayList<DateTime> monthsDateTime;
-	protected ArrayList<DBEntity> asists;	
+	protected ArrayList<DBEntity> asists;
+	
 	protected HashMap<Integer, String> nombreMeses;
 	protected HashMap<String,Integer> claveMeses;
 	
@@ -45,6 +40,7 @@ public abstract class PrintDialog extends JDialog implements ActionListener{
 	
 	public PrintDialog(MainFrame owner) {
 		this.owner = owner;
+		
 		initDialog();
 	}
 	
@@ -52,7 +48,7 @@ public abstract class PrintDialog extends JDialog implements ActionListener{
 		initNombreMeses();
 		initClaveMeses();
 		
-		setLayout(new GridLayout(2,2));
+		setLayout(new BorderLayout());
 		
 		asists = HibernateMethods.getListEntities(HibernateEntities.ASISTE);
 		
@@ -65,8 +61,6 @@ public abstract class PrintDialog extends JDialog implements ActionListener{
 		month = new JComboBox<String>();
 		exportButton = new JButton("Exportar Horario");
 		selectButton = new JButton("Seleccionar archivo");
-		chooser = new JFileChooser();
-		filePath = new JTextField();
 		
 		monthsString = new LinkedHashSet<String>();
 		monthsDateTime = new ArrayList<DateTime>();
@@ -95,38 +89,12 @@ public abstract class PrintDialog extends JDialog implements ActionListener{
 			}
 		}
 		
-		chooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF", "pdf"));
-		chooser.setDialogTitle("Selecciona archivo para guardar horarios");
-		
 		exportButton.addActionListener(this);
-		selectButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int value = chooser.showSaveDialog(PrintDialog.this);
-				if(value == JFileChooser.APPROVE_OPTION) {
-					file = chooser.getSelectedFile();
-					if(!file.toString().endsWith(".pdf"))
-						file = new File(file+".pdf");
-					filePath.setText(file.toString());
-					PrintDialog.this.revalidate();
-					PrintDialog.this.repaint();
-					PrintDialog.this.pack();
-				}
-			}
-		});
 		
-		add(persona);
-		add(month);
+		add(persona,BorderLayout.WEST);
+		add(month,BorderLayout.EAST);		
 		
-		JPanel selectionPanel = new JPanel(new FlowLayout());
-		selectionPanel.add(filePath);
-		selectionPanel.add(selectButton);
-		
-		add(selectionPanel);
-		
-		
-		add(exportButton);		
+		add(exportButton,BorderLayout.SOUTH);		
 	}
 	
 	private void initNombreMeses() {

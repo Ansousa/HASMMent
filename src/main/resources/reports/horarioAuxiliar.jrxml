@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-06-21T18:36:38 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="horarioUsuario" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a03f2707-126e-45bc-aab5-ee22fc08f6d0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="MesReporte" class="java.lang.String"/>
+	<parameter name="TotalHoras" class="java.lang.String"/>
+	<parameter name="Auxiliar" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="dia" class="java.lang.String">
+		<fieldDescription><![CDATA[dia]]></fieldDescription>
+	</field>
+	<field name="horaInicio" class="java.lang.String">
+		<fieldDescription><![CDATA[horaInicio]]></fieldDescription>
+	</field>
+	<field name="horaFin" class="java.lang.String">
+		<fieldDescription><![CDATA[horaFin]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<fieldDescription><![CDATA[usuario]]></fieldDescription>
+	</field>
+	<field name="tarea" class="java.lang.String">
+		<fieldDescription><![CDATA[tarea]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="370" height="60" uuid="68366e9c-c561-44dc-84ff-c6bb7d6518fe"/>
+				<textElement>
+					<font size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Horario Auxiliar]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="380" y="10" width="420" height="40" uuid="ba5a03b2-df3b-4622-a4ff-4d22957642a9"/>
+				<textElement textAlignment="Right">
+					<font size="24"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{MesReporte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="10" width="380" height="40" uuid="62ecb070-4d32-43f3-b16d-d79b121881d8"/>
+				<textElement>
+					<font size="24" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Auxiliar}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="3" width="800" height="15" backcolor="#70A9A9" uuid="81bc204d-fadb-4d98-aa18-cf6a7b52dc3c"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineColor="#CCCCCC"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="590" y="3" width="210" height="15" uuid="498462b7-f1c5-46a7-8df9-96c130f886ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tarea]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="3" width="136" height="15" uuid="582a2ff5-74af-4070-9fc4-57b6802d4a52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="3" width="136" height="15" uuid="42443142-5934-4dc1-b1bc-342303f2a720"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora Inicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="4" width="136" height="15" uuid="aa6f1f8a-dc0e-43b3-be5f-4eac6d9b9643"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora Fin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="3" width="136" height="15" uuid="d1d4137c-5066-4f9e-bc18-83687238ded7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="800" height="14" backcolor="#E5ECF9" uuid="47979704-3e19-47cf-ab2e-1dfaabdc267e"/>
+				<box>
+					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="0" width="135" height="15" uuid="03df2f2e-0e08-4d78-b6f4-884351c5a392"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="590" y="0" width="210" height="15" uuid="ada8bf36-c7a6-4abf-8f7a-304bef9813c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None"/>
+				<textFieldExpression><![CDATA[$F{tarea}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="0" width="136" height="15" uuid="90d0dcee-6bf0-41fc-b2f5-8dae2e7de4e8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horaInicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="0" width="136" height="15" uuid="9d92122d-babc-4614-8b2a-624013cb84e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horaFin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="0" width="136" height="15" uuid="bf098454-60a0-4079-93eb-afea830965c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="58" splitType="Stretch">
+			<textField>
+				<reportElement x="600" y="10" width="100" height="30" uuid="d2d44156-0110-4f54-815f-7ce3bf6c19a5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="700" y="10" width="100" height="30" uuid="b18d3b27-7729-4ae7-9d87-338c314bb150"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="4" width="799" height="1" forecolor="#0026FF" uuid="e5035c30-3936-45a5-b5b4-801a16ceda2a"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="380" y="0" width="420" height="36" uuid="3bf109cd-bdec-4412-8159-8d1ff36607dc"/>
+				<textElement textAlignment="Right">
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Número total de horas: " + $P{TotalHoras}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
