@@ -82,9 +82,9 @@ public class CreatePermisoDialog extends JDialog implements ActionListener{
 	private void initCreateDialog() {
 		auxs = HibernateMethods.getListEntities(HibernateEntities.AUXILIAR);
 		if(modify)
-			setTitle("Modificar Auxiliar");
+			setTitle("Modificar Permiso");
 		else
-			setTitle("Crear Auxiliar");
+			setTitle("Crear Permiso");
 		add(createForm());
 		setLocationRelativeTo(this.getOwner());
 		setVisible(true);

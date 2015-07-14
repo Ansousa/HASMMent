@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-06-2015 a las 07:13:39
+-- Tiempo de generación: 22-06-2015 a las 04:33:11
 -- Versión del servidor: 5.5.43-0ubuntu0.14.04.1
 -- Versión de PHP: 5.5.9-1ubuntu4.9
 
@@ -36,6 +36,37 @@ CREATE TABLE IF NOT EXISTS `asiste` (
   KEY `FK_ASI_AUX` (`DNI_AUX_ASI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `asiste`
+--
+
+INSERT INTO `asiste` (`DNI_USU_ASI`, `DNI_AUX_ASI`, `FHORAINICIO_ASI`, `FHORAFIN_ASI`, `ACTIVIDAD_ASI`) VALUES
+('11111111H', '22222222J', '2015-07-06 09:00:00', '2015-07-06 10:00:00', 0x4c6576616e7461726c6f),
+('11111111H', '22222222J', '2015-07-07 09:00:00', '2015-07-07 10:00:00', 0x4c6576616e7461726c6f),
+('11111111H', '22222222J', '2015-07-08 09:00:00', '2015-07-08 10:00:00', 0x4c6576616e7461726c6f),
+('11111111H', '22222222J', '2015-07-09 09:00:00', '2015-07-09 10:00:00', 0x4c6576616e7461726c6f),
+('11111111H', '22222222J', '2015-07-10 09:00:00', '2015-07-10 10:00:00', 0x4c6576616e7461726c6f),
+('11111111H', '22222224S', '2015-07-13 10:00:00', '2015-07-13 11:00:00', 0x566967696c61726c6f),
+('11111111H', '22222224S', '2015-07-14 10:00:00', '2015-07-14 11:00:00', 0x566967696c61726c6f),
+('11111111H', '22222224S', '2015-07-15 10:00:00', '2015-07-15 11:00:00', 0x566967696c61726c6f),
+('11111111H', '22222224S', '2015-07-16 10:00:00', '2015-07-16 11:00:00', 0x566967696c61726c6f),
+('11111111H', '22222224S', '2015-07-17 10:00:00', '2015-07-17 11:00:00', 0x566967696c61726c6f),
+('11111112L', '22222222J', '2015-07-06 05:00:00', '2015-07-06 06:00:00', 0x4461726c65206c61206d657269656e6461),
+('11111112L', '22222222J', '2015-07-07 05:00:00', '2015-07-07 06:00:00', 0x4461726c65206c61206d657269656e6461),
+('11111112L', '22222222J', '2015-07-08 05:00:00', '2015-07-08 06:00:00', 0x4461726c65206c61206d657269656e6461),
+('11111112L', '22222222J', '2015-07-09 05:00:00', '2015-07-09 06:00:00', 0x4461726c65206c61206d657269656e6461),
+('11111112L', '22222222J', '2015-07-10 05:00:00', '2015-07-10 06:00:00', 0x4461726c65206c61206d657269656e6461),
+('11111113C', '22222222J', '2015-07-20 05:11:00', '2015-07-20 06:11:00', 0x5649676961726c6f),
+('11111113C', '22222222J', '2015-07-21 05:11:00', '2015-07-21 06:11:00', 0x5649676961726c6f),
+('11111113C', '22222222J', '2015-07-22 05:11:00', '2015-07-22 06:11:00', 0x5649676961726c6f),
+('11111113C', '22222222J', '2015-07-23 05:11:00', '2015-07-23 06:11:00', 0x5649676961726c6f),
+('11111113C', '22222222J', '2015-07-24 05:11:00', '2015-07-24 06:11:00', 0x5649676961726c6f),
+('11111113C', '22222222J', '2015-07-25 05:11:00', '2015-07-25 06:11:00', 0x5649676961726c6f),
+('11111113C', '22222222J', '2015-07-26 05:11:00', '2015-07-26 06:11:00', 0x5649676961726c6f),
+('11111114K', '22222222J', '2015-07-27 09:12:00', '2015-07-27 10:12:00', 0x507265706172617220656c206465736179756e6f),
+('11111114K', '22222222J', '2015-07-28 09:12:00', '2015-07-28 10:12:00', 0x507265706172617220656c206465736179756e6f),
+('11111114K', '22222222J', '2015-07-29 09:12:00', '2015-07-29 10:12:00', 0x507265706172617220656c206465736179756e6f);
+
 -- --------------------------------------------------------
 
 --
@@ -58,9 +89,9 @@ CREATE TABLE IF NOT EXISTS `auxiliar` (
 --
 
 INSERT INTO `auxiliar` (`DNI_AUX`, `NOMBRE_AUX`, `APELLIDO1_AUX`, `APELLIDO2_AUX`, `HORAS_AUX`, `FINICIO_AUX`, `FFIN_AUX`) VALUES
-('22222222J', 'Jose', 'Lopez', 'Lopez', 10, '2015-05-28', '2015-06-07'),
+('22222222J', 'Jose', 'Lopez', 'Lopez', 20, '2015-05-28', '2015-06-07'),
 ('22222223Z', 'Luis', 'Martinez', 'Rodriguez', 20, '2015-05-28', '2015-06-12'),
-('22222224S', 'Manuel', 'Castro', 'Ramirez', 30, '2015-06-06', '2015-06-25'),
+('22222224S', 'Manuel', 'Castro', 'Ramirez', 40, '2015-06-06', '2015-06-25'),
 ('22222225Q', 'Paco', 'Gomez', 'Novoa', 40, '2015-06-27', '2015-08-22');
 
 -- --------------------------------------------------------
@@ -76,14 +107,6 @@ CREATE TABLE IF NOT EXISTS `permiso` (
   `TIPO_PER` varchar(20) COLLATE latin1_spanish_ci NOT NULL COMMENT 'Vacaciones/Baja/Asuntos propios',
   PRIMARY KEY (`DNI_AUX_PER`,`FINICIO_PER`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci COMMENT='Permiso pedido por un auxiliar';
-
---
--- Volcado de datos para la tabla `permiso`
---
-
-INSERT INTO `permiso` (`DNI_AUX_PER`, `FINICIO_PER`, `FFIN_PER`, `TIPO_PER`) VALUES
-('22222222J', '2015-06-22', '2015-06-26', 'Vacaciones'),
-('22222224S', '2015-06-22', '2015-06-23', 'Asuntos propios');
 
 -- --------------------------------------------------------
 
@@ -107,9 +130,9 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`DNI_USU`, `NOMBRE_USU`, `APELLIDO1_USU`, `APELLIDO2_USU`, `DIRECCION_USU`, `HORAS_USU`, `MODALIDAD_USU`) VALUES
-('11111111H', 'Alvaro', 'Alvarez', 'Alvarez', 'Casa de Alvaro	', 10, 'Dependencia'),
-('11111112L', 'Brais', 'Vazquez', 'Vazquez', 'Casa de Brais', 20, 'Dependencia'),
-('11111113C', 'Carlos', 'Martinez', 'Martinez', 'Casa de Carlos', 30, 'Prestación Básica'),
+('11111111H', 'Alvaro', 'Alvarez', 'Alvarez', 'Casa de Alvaro	', 40, 'Dependencia'),
+('11111112L', 'Brais', 'Vazquez', 'Vazquez', 'Casa de Brais', 40, 'Dependencia'),
+('11111113C', 'Carlos', 'Martinez', 'Martinez', 'Casa de Carlos', 40, 'Prestación Básica'),
 ('11111114K', 'David', 'Rodriguez', 'Rodriguez', 'Casa de David', 40, 'Prestación Básica');
 
 --

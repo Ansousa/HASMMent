@@ -22,10 +22,10 @@
         <property name="show_sql">false</property>
 
         <!-- Mapping files -->
-        <mapping resource="es/uvigo/esei/hasmment/entities/Usuario.hbm.xml"/>
-        <mapping resource="es/uvigo/esei/hasmment/entities/Auxiliar.hbm.xml"/>
-        <mapping resource="es/uvigo/esei/hasmment/entities/Permiso.hbm.xml"/>
-        <mapping resource="es/uvigo/esei/hasmment/entities/Asiste.hbm.xml"/>
+        <mapping resource="Usuario.hbm.xml"/>
+        <mapping resource="Auxiliar.hbm.xml"/>
+        <mapping resource="Permiso.hbm.xml"/>
+        <mapping resource="Asiste.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>

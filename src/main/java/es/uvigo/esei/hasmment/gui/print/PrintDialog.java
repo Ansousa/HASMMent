@@ -2,7 +2,7 @@ package es.uvigo.esei.hasmment.gui.print;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public abstract class PrintDialog extends JDialog implements ActionListener{
 	protected HashMap<Integer, String> nombreMeses;
 	protected HashMap<String,Integer> claveMeses;
 	
-	protected File file;
+	protected InputStream file;
 	
 	public PrintDialog(MainFrame owner) {
 		this.owner = owner;

@@ -1,7 +1,7 @@
 package es.uvigo.esei.hasmment.gui.print;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,14 +90,24 @@ public class PrintUserDialog extends PrintDialog{
 			parameters.put("MesReporte", month.getSelectedItem());
 			Usuario a = HibernateMethods.getUsuario(persona.getSelectedItem().toString().trim().split(",")[0]);
 			parameters.put("Usuario", a.getNombre() + " " + a.getApellido1() + " " + a.getApellido2());
-			parameters.put("TotalHoras", new Double(numeroHoras).toString());		
+			parameters.put("TotalHoras", new Double(numeroHoras).toString());
 			try {
-				file = new File(getClass().getResource("/reports/horarioUsuario.jasper").toURI());
-				JasperPrint print = JasperFillManager.fillReport(file.toString(), parameters, beanColDataSource);
+				// read this file into InputStream
+				file = getClass().getResourceAsStream("/reports/horarioUsuario.jasper");
+				JasperPrint print = JasperFillManager.fillReport(file, parameters, beanColDataSource);
 				JasperViewer.viewReport(print);
 			}
 			catch(Exception ex) {
 				ex.printStackTrace();
+			}
+			finally {
+				if (file != null) {
+					try {
+						file.close();
+					} catch (IOException ex1) {
+						ex1.printStackTrace();
+					}
+				}
 			}
 		}
 	}

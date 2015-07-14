@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
@@ -33,24 +34,26 @@ public class ShowAuxDetail extends JFrame{
 	private Interval interval;
 	private String dayToShow;
 	
+	private HashMap<Integer, String> nombreMeses;
+	
 	public ShowAuxDetail(Auxiliar a, DateTime month, boolean oneDay) {
 		this.aux = a;
 		this.asists = HibernateMethods.getListEntities(HibernateEntities.ASISTE);
 		if(!oneDay) {
 			inicio = month;
-			dayToShow =  "Día";
+			initNombreMeses();
+			dayToShow = "Mes " + nombreMeses.get(month.getMonthOfYear()) + " " + month.getYear();
 			fin = month.plusMonths(1);
 			interval = new Interval(inicio,fin);
 		}
 		else{
 			inicio = month.minusMinutes(month.getMinuteOfDay());
-			DateFormat df = new SimpleDateFormat("dd/MM");
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			dayToShow = df.format(new Date(inicio.getMillis()));
 			fin = inicio.plusDays(1);
 			interval = new Interval(inicio,fin);
 		}
 		
-		System.out.println(interval);
 		initFrame();
 	}
 	
@@ -70,7 +73,6 @@ public class ShowAuxDetail extends JFrame{
 	}
 	
 	private IntervalCategoryDataset createDataset() {
-		
 	    final TaskSeries s1 = new TaskSeries("Asistencia");
 	    for (DBEntity dbEntity : asists) {
 	    	Asiste a = (Asiste) dbEntity;
@@ -88,7 +90,6 @@ public class ShowAuxDetail extends JFrame{
 	    }
         final TaskSeriesCollection collection = new TaskSeriesCollection();
         collection.add(s1);
-
         return collection;
 	}
 	        
@@ -96,13 +97,29 @@ public class ShowAuxDetail extends JFrame{
         final JFreeChart chart = ChartFactory.createGanttChart(
             "Reparto de Asistencias",  // chart title
             "Usuario",              // domain axis label
-            dayToShow,              // range axis label
+            "Días",              // range axis label
             dataset,             // data
             false,                // include legend
             true,                // tooltips
             false                // urls
         );    
-//	        chart.getCategoryPlot().getDomainAxis().setMaxCategoryLabelWidthRatio(10.0f);
+	        //chart.getCategoryPlot().getDomainAxis().setMaximumCategoryLabelWidthRatio(10.0f);
         return chart;    
     }
+    
+	private void initNombreMeses() {
+		nombreMeses = new HashMap<Integer, String>();
+		nombreMeses.put(1, "Enero");
+		nombreMeses.put(2, "Febrero");
+		nombreMeses.put(3, "Marzo");
+		nombreMeses.put(4, "Abril");
+		nombreMeses.put(5, "Mayo");
+		nombreMeses.put(6, "Junio");
+		nombreMeses.put(7, "Julio");
+		nombreMeses.put(8, "Agosto");
+		nombreMeses.put(9, "Septiembre");
+		nombreMeses.put(10, "Octubre");
+		nombreMeses.put(11, "Noviembre");
+		nombreMeses.put(12, "Diciembre");
+	}
 }

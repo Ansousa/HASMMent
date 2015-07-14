@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Build-Jdk: 1.8.0_45
+Built-By: Adrián Novoa Sousa
+Created-By: Apache Maven 4.0.0
+Main-Class: es.uvigo.esei.hasmment.HASMment
+Archiver-Version: Plexus Archiver

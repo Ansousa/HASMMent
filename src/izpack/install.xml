@@ -1,0 +1,27 @@
+<installation version="5.0">
+   <info>
+      <appname>HASMment</appname>
+      <appversion>3.1.0-Beta</appversion>
+      <authors>
+         <author name="Adrian Novoa Sousa" email="ansousa@esei.uvigo.es"/>
+      </authors>
+   </info>
+
+   <guiprefs resizable="yes" width="800" height="600"/>
+   <locale>
+      <langpack iso3="spa"/>
+   </locale>
+   <panels>
+      <panel classname="HelloPanel"/>
+      <panel classname="TargetPanel"/>
+      <panel classname="InstallPanel"/>
+      <panel classname="SimpleFinishPanel"/>
+   </panels>
+   <packs>
+      <pack name="exes" required="yes">
+         <description>Archivo ejecutable</description>
+         <file src="HASMment-3.1.0-Beta-stand-alone.jar" targetdir="${INSTALL_PATH}/bin"/>
+      </pack>
+   </packs>
+</installation>
+
